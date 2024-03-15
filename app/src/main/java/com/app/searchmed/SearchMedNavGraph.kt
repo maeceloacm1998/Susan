@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.app.home.ui.feature.ui.HomeRoute
 import com.app.searchmed.routes.Routes
 
 @Composable
@@ -19,13 +20,9 @@ fun SearchMedNavGraph(
         startDestination = startDestination,
         modifier = modifier
     ) {
+
         composable(route = Routes.Home.route) {
             HomeRoute()
         }
     }
-}
-
-@Composable
-fun HomeRoute() {
-    TODO("Not yet implemented")
 }
