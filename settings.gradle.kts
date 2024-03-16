@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "SearchMed"
 include(":app")
 include(":home")
+include(":core")

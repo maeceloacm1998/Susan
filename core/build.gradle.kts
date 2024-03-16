@@ -1,18 +1,15 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.app.searchmed"
+    namespace = "com.app.core"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.app.searchmed"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -50,33 +47,6 @@ android {
 }
 
 dependencies {
-    implementation(project(path = ":home"))
-    implementation(project(path = ":core"))
-
-    //RETROFIT
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
-
-    //COROUTINES
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // NAVIGATION
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-
-    // KOIN
-    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
-
-    // SWIPE REFRESH
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
-
-    // COIN
-    implementation("io.coil-kt:coil-compose:2.5.0")
-
-
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")

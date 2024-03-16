@@ -10,7 +10,6 @@ fun HomeRoute(
     homeViewModel: HomeViewModel = koinViewModel()
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
-
     HomeRoute(uiState = uiState)
 }
 

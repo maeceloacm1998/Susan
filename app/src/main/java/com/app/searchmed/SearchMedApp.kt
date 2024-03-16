@@ -2,8 +2,7 @@ package com.app.searchmed
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.app.searchmed.ui.theme.SearchMedTheme
-
+import com.app.core.ui.theme.SearchMedTheme
 
 @Composable
 fun SearchMedApp() {

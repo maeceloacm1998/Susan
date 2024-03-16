@@ -1,4 +1,4 @@
-package com.app.searchmed.ui.theme
+package com.app.core.ui.theme
 
 import androidx.compose.ui.unit.dp
 
