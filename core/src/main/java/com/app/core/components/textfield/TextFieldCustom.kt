@@ -1,4 +1,4 @@
-package com.app.home.ui.components.textfield
+package com.app.core.components.textfield
 
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -47,7 +47,9 @@ fun TextFieldCustom(
     endIconDescription: String = "",
     endIconListener: (() -> Unit)? = null,
     startIconListener: (() -> Unit)? = null,
-    error: Boolean = false
+    error: Boolean = false,
+    containerColor: Color = Color.White,
+    focusedContainerColor: Color = Color.White
 ) {
     var text by rememberSaveable { mutableStateOf(value) }
     var passwordHidden by rememberSaveable { mutableStateOf(isPasswordToggle) }
@@ -69,7 +71,7 @@ fun TextFieldCustom(
         placeholder = { Text(placeholder, color = GrayDark) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = GrayDark, errorLabelColor = Error,
-            containerColor = Color.White,
+            containerColor = containerColor,
             unfocusedBorderColor = GrayDark,
             focusedTextColor = GrayDark
         ),
