@@ -47,6 +47,17 @@ android {
 }
 
 dependencies {
+    // MAPS
+    implementation("com.google.maps.android:maps-compose:2.11.4")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+
+    //Accompanist (Permission)
+    implementation("com.google.accompanist:accompanist-permissions:0.31.3-beta")
+
+    // KOIN
+    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
     implementation("androidx.core:core-ktx:1.12.0")

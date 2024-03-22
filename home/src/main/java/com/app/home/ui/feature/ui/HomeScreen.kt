@@ -1,22 +1,18 @@
 package com.app.home.ui.feature.ui
 
-
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
 import com.app.core.ui.theme.Background
 import com.app.home.ui.components.makerinfocontainer.MakerInfoContainer
 import com.app.home.ui.components.searchfooter.FooterComponent
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
@@ -27,6 +23,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 @Composable
 fun HomeScreen(
     uiState: HomeUiState.HasHospital,
+    cameraState: CameraPositionState,
     onInfoWindowClick: (Marker) -> Unit
 ) {
     Column(
@@ -37,7 +34,8 @@ fun HomeScreen(
         MapsContainer(
             modifier = Modifier.weight(1f),
             hospitals = uiState.hospitals.orEmpty(),
-            onInfoWindowClick = onInfoWindowClick
+            onInfoWindowClick = onInfoWindowClick,
+            cameraState = cameraState
         )
         FooterComponent()
     }
@@ -47,16 +45,13 @@ fun HomeScreen(
 fun MapsContainer(
     modifier: Modifier = Modifier,
     hospitals: List<LatLng>,
+    cameraState: CameraPositionState,
     onInfoWindowClick: (Marker) -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        val singapore = LatLng(1.35, 17.87)
-        val cameraState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(singapore, 10f)
-        }
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraState,
@@ -71,6 +66,7 @@ fun MapsContainer(
                     state = MarkerState(position = position),
                     title = "Hyde Park",
                     snippet = "Marker in Hyde Park",
+                    draggable = true,
                     onInfoWindowClick = onInfoWindowClick
                 ) { marker ->
                     MakerInfoContainer(marker.title)
@@ -80,6 +76,15 @@ fun MapsContainer(
     }
 }
 
+suspend fun CameraPositionState.centerOnLocation(
+    location: LatLng
+) = animate(
+    update = CameraUpdateFactory.newLatLngZoom(
+        location,
+        10f
+    ),
+    durationMs = 1000
+)
 
 @Preview
 @Composable
@@ -90,9 +95,14 @@ fun HomeScreenPreview() {
         hospitals = listOf(
             LatLng(1.35, 17.87),
             LatLng(1.32, 17.80)
-        )
+        ),
+        isRevokedPermissions = false,
+        currentLocation = null
     )
-    HomeScreen(uiState = uiState, onInfoWindowClick = {})
+    val cameraState = rememberCameraPositionState()
+
+    HomeScreen(uiState = uiState,
+        cameraState = cameraState, onInfoWindowClick = {})
 }
 
 @Preview
@@ -106,14 +116,4 @@ fun FooterComponentPreview() {
 fun MakerInfoContainerPreview() {
     val title = "Teste"
     MakerInfoContainer(title)
-}
-
-fun Context.hasLocationPermission(): Boolean {
-    return ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.ACCESS_FINE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED
 }

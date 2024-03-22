@@ -1,15 +1,25 @@
 package com.app.home.ui.feature.ui
 
+import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.core.service.location.GetLocationUseCase
+import com.app.core.service.location.model.PermissionEvent
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+@RequiresApi(Build.VERSION_CODES.S)
+class HomeViewModel(
+    private val context: Context,
+    private val getLocationUseCase: GetLocationUseCase
+) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
     val uiState = viewModelState
@@ -29,5 +39,29 @@ class HomeViewModel : ViewModel() {
                 )
             )
         }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun handle(event: PermissionEvent) {
+        when (event) {
+            PermissionEvent.Granted -> {
+                viewModelScope.launch {
+                    getLocationUseCase().collect { location ->
+                        onUpdateCurrentLocation(location)
+                    }
+                }
+            }
+
+            PermissionEvent.Revoked -> {
+                onUpdateRevokedPermission(true)
+            }
+        }
+    }
+    private fun onUpdateRevokedPermission(state: Boolean) {
+        viewModelState.update { it.copy(isRevokedPermissions = state) }
+    }
+    private fun onUpdateCurrentLocation(location: LatLng?) {
+        viewModelState.update { it.copy(currentLocation = location, isLoading = false) }
     }
 }

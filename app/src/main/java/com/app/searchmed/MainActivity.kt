@@ -3,6 +3,7 @@ package com.app.searchmed
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.app.core.service.location.di.LocationServiceModule
 import com.app.home.ui.di.HomeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,6 +17,7 @@ class MainActivity : ComponentActivity() {
             androidLogger()
             androidContext(this@MainActivity)
             modules(listOf(
+                LocationServiceModule.modules,
                 HomeModule.modules
             ))
         }
