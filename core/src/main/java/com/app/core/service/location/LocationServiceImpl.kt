@@ -33,8 +33,8 @@ class LocationServiceImpl(
             return@callbackFlow
         }
 
-        val request = LocationRequest.Builder(10000L)
-            .setIntervalMillis(10000L)
+        val request = LocationRequest.Builder(INTERVAL_DELAY)
+            .setIntervalMillis(INTERVAL_DELAY)
             .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
             .build()
 
@@ -63,6 +63,10 @@ class LocationServiceImpl(
     }
 
     override suspend fun onRequestLastCurrentLocation(): Flow<LatLng?> = location
+
+    companion object {
+        private const val INTERVAL_DELAY: Long = 10000L
+    }
 }
 
 fun Context.hasLocationPermission(): Boolean {
