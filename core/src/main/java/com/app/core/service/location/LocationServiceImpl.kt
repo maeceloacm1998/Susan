@@ -23,7 +23,7 @@ class LocationServiceImpl(
     private val context: Context,
     private val locationClient: FusedLocationProviderClient
 ) : LocationService {
-    private val location = MutableStateFlow(LatLng(0.0, 0.0))
+    private val location: MutableStateFlow<LatLng?> = MutableStateFlow(null)
 
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.S)
