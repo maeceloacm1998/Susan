@@ -1,4 +1,4 @@
-package com.app.home.ui.feature.ui.models
+package com.app.home.ui.feature.ui.home.models
 
 import androidx.annotation.StringRes
 

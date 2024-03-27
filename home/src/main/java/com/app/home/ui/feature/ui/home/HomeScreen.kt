@@ -1,4 +1,4 @@
-package com.app.home.ui.feature.ui
+package com.app.home.ui.feature.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -96,7 +96,6 @@ fun HomeScreenPreview() {
             LatLng(1.35, 17.87),
             LatLng(1.32, 17.80)
         ),
-        isRevokedPermissions = false,
         currentLocation = null
     )
     val cameraState = rememberCameraPositionState()

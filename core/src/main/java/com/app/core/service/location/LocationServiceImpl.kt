@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import com.app.core.service.location.model.LocationService
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -17,16 +16,18 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
 
 class LocationServiceImpl(
     private val context: Context,
     private val locationClient: FusedLocationProviderClient
-): LocationService {
+) : LocationService {
+    private val location = MutableStateFlow(LatLng(0.0, 0.0))
+
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.S)
-    override fun requestLocationUpdates(): Flow<LatLng?> = callbackFlow {
-
+    override suspend fun onRequestLocationUpdates(): Flow<LatLng?> = callbackFlow {
         if (!context.hasLocationPermission()) {
             trySend(null)
             return@callbackFlow
@@ -57,10 +58,11 @@ class LocationServiceImpl(
 
     }
 
-    override fun requestCurrentLocation(): Flow<LatLng?> {
-        TODO("Not yet implemented")
+    override suspend fun onUpdateLastCurrentLocation(currentLocation: LatLng) {
+        location.value = currentLocation
     }
 
+    override suspend fun onRequestLastCurrentLocation(): Flow<LatLng?> = location
 }
 
 fun Context.hasLocationPermission(): Boolean {

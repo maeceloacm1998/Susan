@@ -1,12 +1,11 @@
-package com.app.home.ui.feature.ui
+package com.app.home.ui.feature.ui.home
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.core.service.location.GetLocationUseCase
-import com.app.core.service.location.model.PermissionEvent
+import com.app.core.service.location.domain.GetLastCurrentLocationUseCase
+import com.app.core.service.location.domain.GetLocationUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,8 +16,8 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.S)
 class HomeViewModel(
-    private val context: Context,
-    private val getLocationUseCase: GetLocationUseCase
+    private val getLocationUseCase: GetLocationUseCase,
+    private val getLastCurrentLocationUseCase: GetLastCurrentLocationUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
@@ -31,6 +30,8 @@ class HomeViewModel(
         )
 
     init {
+        observable()
+
         viewModelState.update {
             it.copy(
                 hospitals = listOf(
@@ -39,28 +40,27 @@ class HomeViewModel(
                 )
             )
         }
+
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    fun handle(event: PermissionEvent) {
-        when (event) {
-            PermissionEvent.Granted -> {
-                viewModelScope.launch {
-                    getLocationUseCase().collect { location ->
-                        onUpdateCurrentLocation(location)
-                    }
+    private fun observable() {
+        viewModelScope.launch {
+            getLastCurrentLocationUseCase().collect { currentLocation ->
+                if (currentLocation != null && currentLocation.latitude != 0.0) {
+                    onUpdateCurrentLocation(currentLocation)
                 }
-            }
-
-            PermissionEvent.Revoked -> {
-                onUpdateRevokedPermission(true)
             }
         }
     }
-    private fun onUpdateRevokedPermission(state: Boolean) {
-        viewModelState.update { it.copy(isRevokedPermissions = state) }
+
+    private fun handleGetLocation() {
+        viewModelScope.launch {
+            getLocationUseCase().collect { currentLocation ->
+                onUpdateCurrentLocation(currentLocation)
+            }
+        }
     }
+
     private fun onUpdateCurrentLocation(location: LatLng?) {
         viewModelState.update { it.copy(currentLocation = location, isLoading = false) }
     }

@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.app.home.ui.feature.ui.HomeRoute
+import com.app.home.ui.feature.ui.home.HomeRoute
 import com.app.searchmed.routes.Routes
 
 @Composable
