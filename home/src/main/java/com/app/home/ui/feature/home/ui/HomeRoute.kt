@@ -1,4 +1,4 @@
-package com.app.home.ui.feature.ui.home
+package com.app.home.ui.feature.home.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.app.home.ui.feature.ui.onboarding.OnboardingRoute
+import com.app.home.ui.feature.onboarding.ui.OnboardingRoute
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.CameraPositionState

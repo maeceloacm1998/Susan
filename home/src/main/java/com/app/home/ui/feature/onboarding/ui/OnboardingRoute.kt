@@ -1,4 +1,4 @@
-package com.app.home.ui.feature.ui.onboarding
+package com.app.home.ui.feature.onboarding.ui
 
 import android.content.Context
 import android.os.Build
@@ -17,8 +17,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.core.service.location.utils.LocationUtils.checkLocationPermission
 import com.app.core.service.location.utils.LocationUtils.openAppSpecificSettings
-import com.app.home.ui.feature.ui.onboarding.models.OnboardingStepsType.INTRODUCTION
-import com.app.home.ui.feature.ui.onboarding.models.OnboardingStepsType.WELCOME
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.model.LatLng
 import org.koin.androidx.compose.koinViewModel

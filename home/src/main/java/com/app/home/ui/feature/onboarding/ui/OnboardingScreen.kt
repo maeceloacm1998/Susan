@@ -1,4 +1,4 @@
-package com.app.home.ui.feature.ui.onboarding
+package com.app.home.ui.feature.onboarding.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import com.app.core.components.buttons.ButtonComponent
 import com.app.core.ui.theme.Background
 import com.app.core.ui.theme.CustomDimensions
 import com.app.home.R
-import com.app.home.ui.feature.ui.onboarding.models.OnboardingStepsType
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
 import com.google.android.gms.maps.model.LatLng
 
 @Composable

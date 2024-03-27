@@ -1,11 +1,11 @@
-package com.app.home.ui.feature.ui.home
+package com.app.home.ui.feature.home.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.core.service.location.domain.GetLastCurrentLocationUseCase
-import com.app.core.service.location.domain.GetLocationUseCase
+import com.app.home.ui.feature.home.domain.GetHomeCurrentLocationUseCase
+import com.app.home.ui.feature.home.domain.ObserveHomeCurrentLocationUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.S)
 class HomeViewModel(
-    private val getLocationUseCase: GetLocationUseCase,
-    private val getLastCurrentLocationUseCase: GetLastCurrentLocationUseCase
+    private val getHomeCurrentLocationUseCase: GetHomeCurrentLocationUseCase,
+    private val observeHomeCurrentLocationUseCase: ObserveHomeCurrentLocationUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
@@ -45,8 +45,8 @@ class HomeViewModel(
 
     private fun observable() {
         viewModelScope.launch {
-            getLastCurrentLocationUseCase().collect { currentLocation ->
-                if (currentLocation != null && currentLocation.latitude != 0.0) {
+            observeHomeCurrentLocationUseCase().collect { currentLocation ->
+                if (currentLocation != null) {
                     onUpdateCurrentLocation(currentLocation)
                 }
             }
@@ -55,9 +55,8 @@ class HomeViewModel(
 
     private fun handleGetLocation() {
         viewModelScope.launch {
-            getLocationUseCase().collect { currentLocation ->
-                onUpdateCurrentLocation(currentLocation)
-            }
+            val currentLocation = getHomeCurrentLocationUseCase()
+            onUpdateCurrentLocation(currentLocation)
         }
     }
 
