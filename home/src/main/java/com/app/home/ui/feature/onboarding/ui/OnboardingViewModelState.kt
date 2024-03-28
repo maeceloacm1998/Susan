@@ -1,6 +1,6 @@
 package com.app.home.ui.feature.onboarding.ui
 
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.ui.feature.onboarding.models.OnboardingStepsType
 import com.google.android.gms.maps.model.LatLng
 
 sealed interface OnboardingUiState {

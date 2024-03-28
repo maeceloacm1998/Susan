@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.WELCOME
+import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.INTRODUCTION
+import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.WELCOME
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
