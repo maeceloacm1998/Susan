@@ -5,6 +5,14 @@ import com.google.android.gms.maps.model.LatLng
 
 class GetHomeCurrentLocationUseCase(
     private val homeRepository: HomeRepository
-){
-    suspend operator fun invoke(): LatLng? = homeRepository.handleCurrentLocation()
+) {
+    suspend operator fun invoke(): LatLng? {
+        homeRepository.run {
+            if (isLocationActive()) {
+                return handleCurrentLocation()
+            }
+        }
+
+        return LatLng(0.0, 0.0)
+    }
 }

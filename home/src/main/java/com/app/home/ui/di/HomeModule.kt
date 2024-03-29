@@ -10,6 +10,7 @@ import com.app.home.ui.feature.home.domain.GetShowOnboardingUseCase
 import com.app.home.ui.feature.home.domain.ObserveHomeCurrentLocationUseCase
 import com.app.home.ui.feature.home.domain.UpdateShowOnboardingUseCase
 import com.app.home.ui.feature.home.ui.HomeViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -18,6 +19,7 @@ object HomeModule {
     val modules = module {
         single<HomeRepository> {
             HomeRepositoryImpl(
+                context = androidContext(),
                 getLocationUseCase = get(),
                 getLastCurrentLocationUseCase = get(),
                 sharedPreferences = get()

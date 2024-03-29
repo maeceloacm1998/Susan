@@ -7,6 +7,7 @@ interface HomeRepository {
     suspend fun handleNearbyHospitals()
     suspend fun handleCurrentLocation(): LatLng?
     suspend fun observeCurrentLocation(): Flow<LatLng?>
-    fun isShowOnboarding(): Boolean
     fun onFinishOnboarding()
+    fun isLocationActive(): Boolean
+    fun isShowOnboarding(): Boolean
 }

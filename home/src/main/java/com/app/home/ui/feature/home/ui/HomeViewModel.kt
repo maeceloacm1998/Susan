@@ -63,17 +63,24 @@ class HomeViewModel(
     }
 
     private fun handleGetLocation() {
-        viewModelScope.launch {
-            val currentLocation = getHomeCurrentLocationUseCase()
-            onUpdateCurrentLocation(currentLocation)
+        val isShowOnboarding = getShowOnboardingUseCase()
+
+        if(!isShowOnboarding) {
+            viewModelScope.launch {
+                val currentLocation = getHomeCurrentLocationUseCase()
+                onUpdateCurrentLocation(currentLocation)
+            }
         }
     }
 
     private fun onUpdateCurrentLocation(location: LatLng?) {
+        val isShowOnboarding = getShowOnboardingUseCase()
+
         viewModelState.update {
             it.copy(
                 currentLocation = location,
-                isLoading = false
+                showOnboarding = isShowOnboarding,
+                isLoading = false,
             )
         }
     }
