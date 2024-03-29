@@ -9,7 +9,8 @@ object OnboardingModule {
         viewModel {
             OnboardingViewModel(
                 getLocationUseCase = get(),
-                updateLastCurrentLocationUseCase = get()
+                updateLastCurrentLocationUseCase = get(),
+                updateShowOnboardingUseCase = get()
             )
         }
     }

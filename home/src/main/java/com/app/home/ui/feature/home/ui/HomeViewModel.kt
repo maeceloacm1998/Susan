@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.home.ui.feature.home.domain.GetHomeCurrentLocationUseCase
+import com.app.home.ui.feature.home.domain.GetShowOnboardingUseCase
 import com.app.home.ui.feature.home.domain.ObserveHomeCurrentLocationUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.S)
 class HomeViewModel(
     private val getHomeCurrentLocationUseCase: GetHomeCurrentLocationUseCase,
-    private val observeHomeCurrentLocationUseCase: ObserveHomeCurrentLocationUseCase
+    private val observeHomeCurrentLocationUseCase: ObserveHomeCurrentLocationUseCase,
+    private val getShowOnboardingUseCase: GetShowOnboardingUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
@@ -31,6 +33,7 @@ class HomeViewModel(
 
     init {
         observable()
+        onUpdateShowOnboarding()
 
         viewModelState.update {
             it.copy(
@@ -40,7 +43,6 @@ class HomeViewModel(
                 )
             )
         }
-
     }
 
     private fun observable() {
@@ -48,9 +50,16 @@ class HomeViewModel(
             observeHomeCurrentLocationUseCase().collect { currentLocation ->
                 if (currentLocation != null) {
                     onUpdateCurrentLocation(currentLocation)
+                } else {
+                    handleGetLocation()
                 }
             }
         }
+    }
+
+    private fun onUpdateShowOnboarding() {
+        val isShowOnboarding = getShowOnboardingUseCase()
+        viewModelState.update { it.copy(showOnboarding = isShowOnboarding, isLoading = !isShowOnboarding) }
     }
 
     private fun handleGetLocation() {
@@ -61,6 +70,11 @@ class HomeViewModel(
     }
 
     private fun onUpdateCurrentLocation(location: LatLng?) {
-        viewModelState.update { it.copy(currentLocation = location, isLoading = false) }
+        viewModelState.update {
+            it.copy(
+                currentLocation = location,
+                isLoading = false
+            )
+        }
     }
 }

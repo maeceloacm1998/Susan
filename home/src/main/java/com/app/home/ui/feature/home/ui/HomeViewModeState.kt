@@ -7,17 +7,20 @@ sealed interface HomeUiState {
     val isLoading: Boolean
     val errorMessages: ErrorMessage?
     val currentLocation: LatLng?
+    val showOnboarding: Boolean
 
     data class NoHospital(
         override val currentLocation: LatLng?,
         override val isLoading: Boolean,
-        override val errorMessages: ErrorMessage?
+        override val errorMessages: ErrorMessage?,
+        override val showOnboarding: Boolean
     ) : HomeUiState
 
     data class HasHospital(
         override val isLoading: Boolean,
         override val errorMessages: ErrorMessage?,
         override val currentLocation: LatLng?,
+        override val showOnboarding: Boolean,
         val hospitals: List<LatLng>?,
     ) : HomeUiState
 }
@@ -27,6 +30,7 @@ data class HomeViewModelState(
     val currentLocation: LatLng? = null,
     val isLoading: Boolean = false,
     val isRevokedPermissions: Boolean = false,
+    val showOnboarding: Boolean = false,
     val errorMessages: ErrorMessage? = null,
 ) {
     fun toUiState(): HomeUiState =
@@ -34,6 +38,7 @@ data class HomeViewModelState(
             isLoading = isLoading,
             errorMessages = errorMessages,
             hospitals = hospitals,
-            currentLocation = currentLocation
+            currentLocation = currentLocation,
+            showOnboarding = showOnboarding
         )
 }

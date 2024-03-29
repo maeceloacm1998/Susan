@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import com.app.core.service.location.di.LocationServiceModule
+import com.app.core.service.sharedpreferences.SharedPreferencesModule
 import com.app.home.ui.di.HomeModule
 import com.app.home.ui.di.OnboardingModule
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
             androidLogger()
             androidContext(this@MainActivity)
             modules(listOf(
+                SharedPreferencesModule.modules,
                 LocationServiceModule.modules,
                 HomeModule.modules,
                 OnboardingModule.modules

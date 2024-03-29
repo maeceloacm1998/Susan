@@ -4,8 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.app.core.components.screenerror.ScreenError
+import com.app.core.components.screenloading.LoadingContent
 import com.app.core.ui.theme.Background
 import com.app.home.ui.components.makerinfocontainer.MakerInfoContainer
 import com.app.home.ui.components.searchfooter.FooterComponent
@@ -22,6 +25,37 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun HomeScreen(
+    uiState: HomeUiState,
+    cameraState: CameraPositionState,
+    onInfoWindowClick: (Marker) -> Unit
+) {
+    LoadingContent(
+        empty = when (uiState) {
+            is HomeUiState.HasHospital -> {
+                check(uiState is HomeUiState.HasHospital)
+                checkNotNull(uiState.hospitals?.isEmpty())
+            }
+            is HomeUiState.NoHospital -> false
+        },
+        emptyContent = { ScreenError() },
+        content = {
+            LaunchedEffect(key1 = uiState.currentLocation, key2 = uiState.isLoading) {
+                uiState.currentLocation?.let { cameraState.centerOnLocation(it) }
+            }
+
+            check(uiState is HomeUiState.HasHospital)
+            HomeContainer(
+                uiState = uiState,
+                cameraState = cameraState,
+                onInfoWindowClick = onInfoWindowClick
+            )
+        }
+    )
+
+}
+
+@Composable
+fun HomeContainer(
     uiState: HomeUiState.HasHospital,
     cameraState: CameraPositionState,
     onInfoWindowClick: (Marker) -> Unit
@@ -58,7 +92,7 @@ fun MapsContainer(
             properties = MapProperties(
                 isMyLocationEnabled = true,
                 mapType = MapType.NORMAL,
-                isTrafficEnabled = true
+                isTrafficEnabled = false
             )
         ) {
             hospitals.forEach { position ->
@@ -76,16 +110,6 @@ fun MapsContainer(
     }
 }
 
-suspend fun CameraPositionState.centerOnLocation(
-    location: LatLng
-) = animate(
-    update = CameraUpdateFactory.newLatLngZoom(
-        location,
-        10f
-    ),
-    durationMs = 1000
-)
-
 @Preview
 @Composable
 fun HomeScreenPreview() {
@@ -93,9 +117,9 @@ fun HomeScreenPreview() {
         isLoading = false,
         errorMessages = null,
         hospitals = listOf(
-            LatLng(1.35, 17.87),
-            LatLng(1.32, 17.80)
+
         ),
+        showOnboarding = false,
         currentLocation = null
     )
     val cameraState = rememberCameraPositionState()
@@ -116,3 +140,13 @@ fun MakerInfoContainerPreview() {
     val title = "Teste"
     MakerInfoContainer(title)
 }
+
+suspend fun CameraPositionState.centerOnLocation(
+    location: LatLng
+) = animate(
+    update = CameraUpdateFactory.newLatLngZoom(
+        location,
+        14f
+    ),
+    durationMs = 1500
+)

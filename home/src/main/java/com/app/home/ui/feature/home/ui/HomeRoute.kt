@@ -14,7 +14,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.app.core.components.screenloading.ScreenLoading
 import com.app.home.ui.feature.onboarding.ui.OnboardingRoute
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.model.Marker
@@ -53,19 +53,16 @@ fun HomeRoute(
     cameraState: CameraPositionState,
     onInfoWindowClick: (Marker) -> Unit,
 ) {
-    if(uiState.currentLocation == null) {
-        OnboardingRoute()
-    } else {
-        LaunchedEffect(uiState.currentLocation) {
-            uiState.currentLocation?.let { cameraState.centerOnLocation(it) }
+    when {
+        uiState.isLoading -> ScreenLoading()
+        uiState.showOnboarding -> OnboardingRoute()
+        else -> {
+            HomeScreen(
+                uiState = uiState,
+                cameraState = cameraState,
+                onInfoWindowClick = onInfoWindowClick
+            )
         }
-
-        check(uiState is HomeUiState.HasHospital)
-        HomeScreen(
-            uiState = uiState,
-            cameraState = cameraState,
-            onInfoWindowClick = onInfoWindowClick
-        )
     }
 }
 
