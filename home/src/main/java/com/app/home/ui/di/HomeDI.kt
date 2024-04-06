@@ -1,0 +1,13 @@
+package com.app.home.ui.di
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+
+object HomeDI {
+    @RequiresApi(Build.VERSION_CODES.S)
+    val instance = listOf(
+        HomeUseCaseModule.modules,
+        HomeModule.modules,
+        OnboardingModule.modules
+    )
+}

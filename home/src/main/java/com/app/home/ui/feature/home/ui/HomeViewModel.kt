@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.home.ui.feature.home.domain.GetHomeCurrentLocationUseCase
 import com.app.home.ui.feature.home.domain.GetShowOnboardingUseCase
 import com.app.home.ui.feature.home.domain.ObserveHomeCurrentLocationUseCase
+import com.app.home.ui.feature.home.domain.ObserveHomeShowOnboardingUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,8 +19,9 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.S)
 class HomeViewModel(
     private val getHomeCurrentLocationUseCase: GetHomeCurrentLocationUseCase,
+    private val getShowOnboardingUseCase: GetShowOnboardingUseCase,
     private val observeHomeCurrentLocationUseCase: ObserveHomeCurrentLocationUseCase,
-    private val getShowOnboardingUseCase: GetShowOnboardingUseCase
+    private val observeHomeShowOnboardingUseCase: ObserveHomeShowOnboardingUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 
@@ -33,7 +35,7 @@ class HomeViewModel(
 
     init {
         observable()
-        onUpdateShowOnboarding()
+        getShowOnboardingUseCase()
 
         viewModelState.update {
             it.copy(
@@ -55,17 +57,18 @@ class HomeViewModel(
                 }
             }
         }
-    }
 
-    private fun onUpdateShowOnboarding() {
-        val isShowOnboarding = getShowOnboardingUseCase()
-        viewModelState.update { it.copy(showOnboarding = isShowOnboarding, isLoading = !isShowOnboarding) }
+        viewModelScope.launch {
+            observeHomeShowOnboardingUseCase().collect { isShowOnboarding ->
+                onUpdateShowOnboarding(isShowOnboarding)
+            }
+        }
     }
 
     private fun handleGetLocation() {
         val isShowOnboarding = getShowOnboardingUseCase()
 
-        if(!isShowOnboarding) {
+        if (!isShowOnboarding) {
             viewModelScope.launch {
                 val currentLocation = getHomeCurrentLocationUseCase()
                 onUpdateCurrentLocation(currentLocation)
@@ -78,9 +81,18 @@ class HomeViewModel(
 
         viewModelState.update {
             it.copy(
-                currentLocation = location,
+                currentLocation = null,
                 showOnboarding = isShowOnboarding,
                 isLoading = false,
+            )
+        }
+    }
+
+    private fun onUpdateShowOnboarding(isShowOnboarding: Boolean) {
+        viewModelState.update {
+            it.copy(
+                showOnboarding = isShowOnboarding,
+                isLoading = !isShowOnboarding
             )
         }
     }

@@ -1,26 +1,20 @@
 package com.app.home.ui.feature.onboarding.ui
 
-import android.content.Context
 import android.os.Build
-import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.app.core.service.location.utils.LocationUtils.checkLocationPermission
-import com.app.core.service.location.utils.LocationUtils.openAppSpecificSettings
+import com.app.core.ui.theme.CustomDimensions
+import com.app.home.ui.components.carrouselsteps.CarrouselSteps
+import com.app.home.ui.feature.onboarding.models.OnboardingStepsType
+import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.FINISH
 import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.INTRODUCTION
 import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.WELCOME
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.android.gms.maps.model.LatLng
 import org.koin.androidx.compose.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -29,55 +23,40 @@ import org.koin.androidx.compose.koinViewModel
 fun OnboardingRoute(
     onboardingViewModel: OnboardingViewModel = koinViewModel(),
 ) {
-    val context: Context = LocalContext.current
     val uiState by onboardingViewModel.uiState.collectAsStateWithLifecycle()
-    var permissionLocationRemember by rememberSaveable { mutableStateOf(false) }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
-
-    LaunchedEffect(lifecycleState) {
-        if (lifecycleState == Lifecycle.State.RESUMED) {
-            if(checkLocationPermission(context)) {
-                permissionLocationRemember = true
-                onboardingViewModel.onGetCurrentLocation()
-            }
-        }
-    }
 
     OnboardingRoute(
         uiState = uiState,
-        permissionsState = permissionLocationRemember,
-        onClickAfterStep = { onboardingViewModel.onRemoveNewStep() },
-        onClickFinishStep = { onboardingViewModel.onFinishActiveLocation(it)},
-        onClickActiveLocation = { openAppSpecificSettings(context as ComponentActivity) },
-        onClickNextStep = { onboardingViewModel.onNextStep() }
+        stepsOrder = onboardingViewModel.stepsOrder,
+        onClickAfterStep = { onboardingViewModel.onRemoveNewStep(it) },
+        onClickNextStep = { onboardingViewModel.onNextStep(it) }
     )
 }
 
 @Composable
 fun OnboardingRoute(
     uiState: OnboardingUiState,
-    permissionsState: Boolean,
-    onClickNextStep: () -> Unit,
-    onClickAfterStep: () -> Unit,
-    onClickActiveLocation: () -> Unit,
-    onClickFinishStep: (currentLocation: LatLng) -> Unit
+    stepsOrder: List<OnboardingStepsType>,
+    onClickNextStep: (actualShowScreen: OnboardingStepsType) -> Unit,
+    onClickAfterStep: (actualShowScreen: OnboardingStepsType) -> Unit,
 ) {
     check(uiState is OnboardingUiState.Data)
 
-    when (uiState.steps) {
-        WELCOME -> OnboardingWelcomeScreen(
-            uiState = uiState,
-            onClickNextStep = onClickNextStep
-        )
+    Column {
+        when (uiState.steps) {
+            WELCOME -> OnboardingWelcomeScreen(modifier = Modifier.weight(2f))
+            INTRODUCTION -> OnboardingIntroductionScreen(modifier = Modifier.weight(2f))
+            FINISH -> OnboardingFinishScreen(modifier = Modifier.weight(2f))
+        }
 
-        INTRODUCTION -> OnboardingIntroductionScreen(
-            uiState = uiState,
-            permissionState = permissionsState,
-            onClickFinishStep = onClickFinishStep,
-            onClickActiveLocation = onClickActiveLocation,
-            onClickAfterStep = onClickAfterStep
+        CarrouselSteps(
+            modifier = Modifier
+                .weight(0.5f)
+                .padding(horizontal = CustomDimensions.padding24),
+            screenList = stepsOrder,
+            actualShowScreen = uiState.steps,
+            onClickAfterStep = onClickAfterStep,
+            onClickNextStep = onClickNextStep
         )
     }
 }

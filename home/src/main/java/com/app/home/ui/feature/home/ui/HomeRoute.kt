@@ -22,6 +22,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.core.components.screenloading.ScreenLoading
+import com.app.home.ui.feature.locationpermission.ui.LocationPermissionRoute
 import com.app.home.ui.feature.onboarding.ui.OnboardingRoute
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.model.Marker
@@ -56,12 +57,13 @@ fun HomeRoute(
     when {
         uiState.isLoading -> ScreenLoading()
         uiState.showOnboarding -> OnboardingRoute()
+        uiState.currentLocation != null -> LocationPermissionRoute()
         else -> {
-            HomeScreen(
-                uiState = uiState,
-                cameraState = cameraState,
-                onInfoWindowClick = onInfoWindowClick
-            )
+//            HomeScreen(
+//                uiState = uiState,
+//                cameraState = cameraState,
+//                onInfoWindowClick = onInfoWindowClick
+//            )
         }
     }
 }

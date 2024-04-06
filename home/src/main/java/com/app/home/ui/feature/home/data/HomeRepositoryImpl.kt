@@ -9,6 +9,7 @@ import com.app.core.service.location.utils.LocationUtils
 import com.app.core.service.sharedpreferences.SharedPreferencesBuilder
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 
 class HomeRepositoryImpl(
@@ -17,6 +18,8 @@ class HomeRepositoryImpl(
     private val getLastCurrentLocationUseCase: GetLastCurrentLocationUseCase,
     private val sharedPreferences: SharedPreferencesBuilder
 ) : HomeRepository {
+    private val showOnboarding: MutableStateFlow<Boolean> = MutableStateFlow(true)
+
     override suspend fun handleNearbyHospitals() {
         TODO("Not yet implemented")
     }
@@ -27,11 +30,16 @@ class HomeRepositoryImpl(
     }
 
     override suspend fun observeCurrentLocation(): Flow<LatLng?> = getLastCurrentLocationUseCase()
+    override suspend fun observeShowOnboarding(): Flow<Boolean> = showOnboarding
+
     override fun isShowOnboarding(): Boolean {
-        return sharedPreferences.getBoolean(ONBOARDING_KEY, true)
+        val isShowOnboarding = sharedPreferences.getBoolean(ONBOARDING_KEY, true)
+        showOnboarding.value = isShowOnboarding
+        return isShowOnboarding
     }
 
     override fun onFinishOnboarding() {
+        showOnboarding.value = false
         sharedPreferences.putBoolean(ONBOARDING_KEY, false)
     }
 

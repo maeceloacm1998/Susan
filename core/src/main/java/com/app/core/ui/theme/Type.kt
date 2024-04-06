@@ -9,7 +9,7 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 30.sp,
-        lineHeight = 28.sp,
+        lineHeight = 45.sp,
         letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(

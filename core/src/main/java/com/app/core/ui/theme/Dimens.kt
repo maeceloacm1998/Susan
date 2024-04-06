@@ -1,6 +1,7 @@
 package com.app.core.ui.theme
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 object CustomDimensions {
     val padding300 = 300.dp
@@ -12,6 +13,7 @@ object CustomDimensions {
     val padding130 = 130.dp
     val padding120 = 120.dp
     val padding80 = 80.dp
+    val padding70 = 70.dp
     val padding60 = 60.dp
     val padding50 = 50.dp
     val padding40 = 40.dp
@@ -25,4 +27,6 @@ object CustomDimensions {
     val padding5 = 5.dp
     val padding2 = 2.dp
     val padding1 = 1.dp
+
+    val spacingLetter25 = 25.sp
 }
