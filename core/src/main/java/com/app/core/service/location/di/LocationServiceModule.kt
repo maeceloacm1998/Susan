@@ -17,8 +17,8 @@ object LocationServiceModule {
                 locationClient = LocationServices.getFusedLocationProviderClient(androidContext())
             )
         }
-        factory { GetLocationUseCase(locationService = get()) }
-        factory { GetLastCurrentLocationUseCase(locationService = get()) }
-        factory { UpdateLastCurrentLocationUseCase(locationService = get()) }
+        single { GetLocationUseCase(locationService = get()) }
+        single { GetLastCurrentLocationUseCase(locationService = get()) }
+        single { UpdateLastCurrentLocationUseCase(locationService = get()) }
     }
 }

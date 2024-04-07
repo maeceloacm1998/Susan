@@ -8,7 +8,4 @@ interface HomeRepository {
     suspend fun handleCurrentLocation(): LatLng?
     suspend fun observeCurrentLocation(): Flow<LatLng?>
     suspend fun observeShowOnboarding(): Flow<Boolean>
-    fun isLocationActive(): Boolean
-    fun isShowOnboarding(): Boolean
-    fun onFinishOnboarding()
 }

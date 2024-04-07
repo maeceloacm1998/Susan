@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.app.core.routes.Routes
 import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
 import com.app.core.service.location.utils.LocationUtils.openAppSpecificSettings
@@ -18,11 +20,14 @@ class LocationPermissionViewModel(
 ) : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.S)
-    fun onGetUserLocation() {
+    fun onGetUserLocation(navController: NavController) {
         viewModelScope.launch {
             getLocationUseCase().collect { location ->
-                if(location != null) {
-                    onUpdateUserLocation(location)
+                if (location != null) {
+                    onUpdateUserLocation(
+                        navController = navController,
+                        location = location
+                    )
                 }
             }
         }
@@ -32,7 +37,19 @@ class LocationPermissionViewModel(
         openAppSpecificSettings(context as ComponentActivity)
     }
 
-    private suspend fun onUpdateUserLocation(location: LatLng) {
+    private suspend fun onUpdateUserLocation(
+        navController: NavController,
+        location: LatLng
+    ) {
         updateLastCurrentLocationUseCase(location)
+        onGoToHome(navController)
+    }
+
+    private fun onGoToHome(navigation: NavController) {
+        navigation.navigate(Routes.Home.route) {
+            popUpTo(Routes.CheckPermissions.route) {
+                inclusive = true
+            }
+        }
     }
 }

@@ -117,10 +117,12 @@ fun HomeScreenPreview() {
         isLoading = false,
         errorMessages = null,
         hospitals = listOf(
-
+            LatLng(1.35, 17.87),
+            LatLng(1.32, 17.80)
         ),
         showOnboarding = false,
-        currentLocation = null
+        currentLocation = null,
+        isLocationActive = false
     )
     val cameraState = rememberCameraPositionState()
 
@@ -146,7 +148,7 @@ suspend fun CameraPositionState.centerOnLocation(
 ) = animate(
     update = CameraUpdateFactory.newLatLngZoom(
         location,
-        14f
+        15f
     ),
-    durationMs = 1500
+    durationMs = 3000
 )

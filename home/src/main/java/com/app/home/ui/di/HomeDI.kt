@@ -8,6 +8,9 @@ object HomeDI {
     val instance = listOf(
         HomeUseCaseModule.modules,
         HomeModule.modules,
+        LocationPermissionModule.modules,
+        LocationPermissionUseCaseModule.modules,
+        OnboardingUseCaseModule.modules,
         OnboardingModule.modules
     )
 }

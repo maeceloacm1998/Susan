@@ -5,9 +5,10 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.app.core.service.location.domain.GetLocationUseCase
-import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
 import com.app.core.ui.theme.SearchMedTheme
+import com.app.core.routes.Routes
+import com.app.home.ui.feature.locationpermission.domain.GeLocationActiveUseCase
+import com.app.home.ui.feature.onboarding.domain.GetOnboardingShowOnboardingUseCase
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import org.koin.compose.koinInject
 
@@ -15,35 +16,20 @@ import org.koin.compose.koinInject
 @ExperimentalPermissionsApi
 @Composable
 fun SearchMedApp() {
-    val locationService: GetLocationUseCase = koinInject()
-    val updateCurrentLocation: UpdateLastCurrentLocationUseCase = koinInject()
     val navController = rememberNavController()
+    val getLocationActiveUseCase: GeLocationActiveUseCase = koinInject()
+    val getOnboardingShowOnboardingUseCase: GetOnboardingShowOnboardingUseCase = koinInject()
+
+    val startDestination = when {
+        getOnboardingShowOnboardingUseCase() -> Routes.Onboarding.route
+        !getLocationActiveUseCase() -> Routes.CheckPermissions.route
+        else -> Routes.Home.route
+    }
 
     SearchMedTheme {
-//        val permissionState = rememberMultiplePermissionsState(
-//            permissions = listOf(
-//                Manifest.permission.ACCESS_FINE_LOCATION,
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            )
-//        )
-//
-//        LaunchedEffect(Unit) {
-//            val permissionsToRequest = permissionState.permissions.filter {
-//                !it.status.isGranted
-//            }
-//
-//            when {
-//                permissionsToRequest.isNotEmpty() -> permissionState.launchMultiplePermissionRequest()
-//                permissionState.allPermissionsGranted -> {
-//                    locationService().collect { location ->
-//                        location?.let { updateCurrentLocation(it) }
-//                    }
-//                }
-//            }
-//        }
-
         SearchMedNavGraph(
-            navController = navController
+            navController = navController,
+            startDestination = startDestination
         )
     }
 }

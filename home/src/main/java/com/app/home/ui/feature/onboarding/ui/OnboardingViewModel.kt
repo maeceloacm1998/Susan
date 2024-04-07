@@ -2,13 +2,14 @@ package com.app.home.ui.feature.onboarding.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.core.service.location.domain.GetLocationUseCase
-import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
-import com.app.home.ui.feature.home.domain.UpdateShowOnboardingUseCase
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.FINISH
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.INTRODUCTION
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.WELCOME
+import androidx.navigation.NavController
+import com.app.core.routes.Routes
+import com.app.home.ui.feature.locationpermission.domain.GeLocationActiveUseCase
+import com.app.home.ui.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.FINISH
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -16,9 +17,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class OnboardingViewModel(
-    private val getLocationUseCase: GetLocationUseCase,
-    private val updateLastCurrentLocationUseCase: UpdateLastCurrentLocationUseCase,
-    private val updateShowOnboardingUseCase: UpdateShowOnboardingUseCase
+    private val getHomeLocationActiveUseCase: GeLocationActiveUseCase,
+    private val updateShowOnboardingUseCase: UpdateOnboardingShowOnboardingUseCase
 ) : ViewModel() {
     private val viewModelState =
         MutableStateFlow(OnBoardingViewModelState(steps = WELCOME))
@@ -37,9 +37,9 @@ class OnboardingViewModel(
             viewModelState.value.toUiState()
         )
 
-    fun onNextStep(steps: OnboardingStepsType) {
+    fun onNextStep(steps: OnboardingStepsType, navigation: NavController) {
         if(steps == FINISH) {
-            onFinishActiveLocation()
+            onFinishActiveLocation(navigation)
         } else {
             val index = stepsOrder.indexOf(steps)
             viewModelState.update { it.copy(steps = stepsOrder[index + 1]) }
@@ -54,7 +54,28 @@ class OnboardingViewModel(
         }
     }
 
-    private fun onFinishActiveLocation() {
+    private fun onFinishActiveLocation(navigation: NavController) {
         updateShowOnboardingUseCase()
+        if(getHomeLocationActiveUseCase()) {
+            onGoToHome(navigation)
+        } else {
+            onGoToLocationPermission(navigation)
+        }
+    }
+
+    private fun onGoToLocationPermission(navigation: NavController) {
+        navigation.navigate(Routes.CheckPermissions.route) {
+            popUpTo(Routes.Onboarding.route) {
+                inclusive = true
+            }
+        }
+    }
+
+    private fun onGoToHome(navigation: NavController) {
+        navigation.navigate(Routes.Home.route) {
+            popUpTo(Routes.Onboarding.route) {
+                inclusive = true
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import com.app.core.di.ServiceDI
+import com.app.core.service.di.ServiceDI
 import com.app.home.ui.di.HomeDI
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import org.koin.android.ext.koin.androidContext

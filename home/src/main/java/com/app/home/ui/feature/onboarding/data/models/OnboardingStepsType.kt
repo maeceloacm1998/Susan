@@ -1,4 +1,4 @@
-package com.app.home.ui.feature.onboarding.models
+package com.app.home.ui.feature.onboarding.data.models
 
 enum class OnboardingStepsType {
     WELCOME,

@@ -9,8 +9,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.NavController
 import com.app.core.service.location.utils.LocationUtils.checkLocationPermission
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -20,6 +21,7 @@ import org.koin.androidx.compose.koinViewModel
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun LocationPermissionRoute(
+    navController: NavController,
     locationViewModel: LocationPermissionViewModel = koinViewModel()
 ) {
     val context: Context = LocalContext.current
@@ -35,23 +37,21 @@ fun LocationPermissionRoute(
 
     LaunchedEffect(permissionState) {
         if(permissionState.allPermissionsGranted) {
-            locationViewModel.onGetUserLocation()
-        } else {
-            // TODO Erro de permissaão não aceita
+            locationViewModel.onGetUserLocation(navController)
         }
     }
 
     LaunchedEffect(lifecycleState) {
         if (lifecycleState == Lifecycle.State.RESUMED) {
             if (checkLocationPermission(context)) {
-                locationViewModel.onGetUserLocation()
+                locationViewModel.onGetUserLocation(navController)
             }
         }
     }
 
     LocationPermissionScreen(
-        onActiveAutomateAccess = { locationViewModel.onOpenManualConfig(context) },
-        onActiveManualAccess = { permissionState.launchMultiplePermissionRequest() }
+        onActiveAutomateAccess = { permissionState.launchMultiplePermissionRequest() },
+        onActiveManualAccess = {  locationViewModel.onOpenManualConfig(context)}
     )
 }
 

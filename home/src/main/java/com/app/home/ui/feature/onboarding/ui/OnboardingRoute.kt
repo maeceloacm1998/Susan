@@ -2,18 +2,21 @@ package com.app.home.ui.feature.onboarding.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.app.core.ui.theme.CustomDimensions
+import com.app.core.utils.AnimatedUtils.animatedTransitionPage
 import com.app.home.ui.components.carrouselsteps.CarrouselSteps
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.FINISH
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.INTRODUCTION
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType.WELCOME
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.FINISH
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import org.koin.androidx.compose.koinViewModel
 
@@ -21,6 +24,7 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalPermissionsApi
 @Composable
 fun OnboardingRoute(
+    navController: NavController,
     onboardingViewModel: OnboardingViewModel = koinViewModel(),
 ) {
     val uiState by onboardingViewModel.uiState.collectAsStateWithLifecycle()
@@ -29,7 +33,12 @@ fun OnboardingRoute(
         uiState = uiState,
         stepsOrder = onboardingViewModel.stepsOrder,
         onClickAfterStep = { onboardingViewModel.onRemoveNewStep(it) },
-        onClickNextStep = { onboardingViewModel.onNextStep(it) }
+        onClickNextStep = {
+            onboardingViewModel.onNextStep(
+                navigation = navController,
+                steps = it
+            )
+        }
     )
 }
 
@@ -43,10 +52,17 @@ fun OnboardingRoute(
     check(uiState is OnboardingUiState.Data)
 
     Column {
-        when (uiState.steps) {
-            WELCOME -> OnboardingWelcomeScreen(modifier = Modifier.weight(2f))
-            INTRODUCTION -> OnboardingIntroductionScreen(modifier = Modifier.weight(2f))
-            FINISH -> OnboardingFinishScreen(modifier = Modifier.weight(2f))
+        AnimatedContent(
+            modifier = Modifier.weight(2f),
+            targetState = uiState.steps,
+            label = "AnimatedContent",
+            transitionSpec = animatedTransitionPage()
+        ) { targetState ->
+            when (targetState) {
+                WELCOME -> OnboardingWelcomeScreen()
+                INTRODUCTION -> OnboardingIntroductionScreen()
+                FINISH -> OnboardingFinishScreen()
+            }
         }
 
         CarrouselSteps(

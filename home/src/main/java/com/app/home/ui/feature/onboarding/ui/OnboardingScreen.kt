@@ -21,7 +21,7 @@ import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
 import com.app.core.ui.theme.Secondary
 import com.app.home.R
-import com.app.home.ui.feature.onboarding.models.OnboardingStepsType
+import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
 
 @Composable
 fun OnboardingWelcomeScreen(modifier: Modifier = Modifier) {
