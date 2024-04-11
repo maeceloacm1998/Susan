@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.app.core.routes.Routes
-import com.app.home.ui.feature.locationpermission.domain.GeLocationActiveUseCase
+import com.app.home.ui.feature.locationpermission.domain.GetLocationActiveUseCase
 import com.app.home.ui.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
 import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
 import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.FINISH
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class OnboardingViewModel(
-    private val getHomeLocationActiveUseCase: GeLocationActiveUseCase,
+    private val getHomeLocationActiveUseCase: GetLocationActiveUseCase,
     private val updateShowOnboardingUseCase: UpdateOnboardingShowOnboardingUseCase
 ) : ViewModel() {
     private val viewModelState =

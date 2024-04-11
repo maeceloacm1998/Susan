@@ -61,6 +61,10 @@ dependencies {
     // NAVIGATION
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
+    testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.5")
     implementation("androidx.core:core-ktx:1.12.0")

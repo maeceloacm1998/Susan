@@ -49,6 +49,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    testImplementation(project(":core"))
 
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
@@ -80,6 +81,11 @@ dependencies {
 
     // COIN
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    testImplementation("io.insert-koin:koin-test:3.5.0")
+    testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.5")

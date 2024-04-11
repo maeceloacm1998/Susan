@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.app.core.ui.theme.SearchMedTheme
 import com.app.core.routes.Routes
-import com.app.home.ui.feature.locationpermission.domain.GeLocationActiveUseCase
+import com.app.home.ui.feature.locationpermission.domain.GetLocationActiveUseCase
 import com.app.home.ui.feature.onboarding.domain.GetOnboardingShowOnboardingUseCase
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import org.koin.compose.koinInject
@@ -17,7 +17,7 @@ import org.koin.compose.koinInject
 @Composable
 fun SearchMedApp() {
     val navController = rememberNavController()
-    val getLocationActiveUseCase: GeLocationActiveUseCase = koinInject()
+    val getLocationActiveUseCase: GetLocationActiveUseCase = koinInject()
     val getOnboardingShowOnboardingUseCase: GetOnboardingShowOnboardingUseCase = koinInject()
 
     val startDestination = when {
