@@ -36,22 +36,28 @@ fun LocationPermissionRoute(
     )
 
     LaunchedEffect(permissionState) {
-        if(permissionState.allPermissionsGranted) {
-            locationViewModel.onGetUserLocation(navController)
+        if (permissionState.allPermissionsGranted) {
+            locationViewModel.onGetUserLocation(
+                navController = navController,
+                context = context
+            )
         }
     }
 
     LaunchedEffect(lifecycleState) {
         if (lifecycleState == Lifecycle.State.RESUMED) {
             if (checkLocationPermission(context)) {
-                locationViewModel.onGetUserLocation(navController)
+                locationViewModel.onGetUserLocation(
+                    navController = navController,
+                    context = context
+                )
             }
         }
     }
 
     LocationPermissionScreen(
         onActiveAutomateAccess = { permissionState.launchMultiplePermissionRequest() },
-        onActiveManualAccess = {  locationViewModel.onOpenManualConfig(context)}
+        onActiveManualAccess = { locationViewModel.onOpenManualConfig(context) }
     )
 }
 

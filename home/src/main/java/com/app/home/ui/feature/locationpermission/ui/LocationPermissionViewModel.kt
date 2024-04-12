@@ -10,17 +10,18 @@ import androidx.navigation.NavController
 import com.app.core.routes.Routes
 import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
-import com.app.core.service.location.utils.LocationUtils.openAppSpecificSettings
+import com.app.home.ui.feature.locationpermission.domain.OpenManualConfigUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class LocationPermissionViewModel(
     private val getLocationUseCase: GetLocationUseCase,
-    private val updateLastCurrentLocationUseCase: UpdateLastCurrentLocationUseCase
+    private val updateLastCurrentLocationUseCase: UpdateLastCurrentLocationUseCase,
+    private val openManualConfigUseCase: OpenManualConfigUseCase
 ) : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.S)
-    fun onGetUserLocation(navController: NavController) {
+    fun onGetUserLocation(navController: NavController, context: Context) {
         viewModelScope.launch {
             getLocationUseCase().collect { location ->
                 if (location != null) {
@@ -28,13 +29,15 @@ class LocationPermissionViewModel(
                         navController = navController,
                         location = location
                     )
+                } else {
+                    onOpenManualConfig(context)
                 }
             }
         }
     }
 
     fun onOpenManualConfig(context: Context) {
-        openAppSpecificSettings(context as ComponentActivity)
+        openManualConfigUseCase(context as ComponentActivity)
     }
 
     private suspend fun onUpdateUserLocation(

@@ -16,7 +16,8 @@ object LocationPermissionModule {
         viewModel {
             LocationPermissionViewModel(
                 getLocationUseCase = get(),
-                updateLastCurrentLocationUseCase = get()
+                updateLastCurrentLocationUseCase = get(),
+                openManualConfigUseCase = get()
             )
         }
     }
