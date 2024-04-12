@@ -4,6 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
@@ -22,4 +24,9 @@ class MainCoroutineRule(private val dispatcher: TestDispatcher = StandardTestDis
         super.finished(description)
         Dispatchers.resetMain()
     }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun Any?.awaitExecuteCoroutines(testDispatcher: TestScope) = testDispatcher.run {
+    this.advanceUntilIdle()
 }
