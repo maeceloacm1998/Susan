@@ -3,6 +3,7 @@ package com.app.home.features.onboarding
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
 import com.app.home.MainCoroutineRule
+import com.app.home.awaitExecuteCoroutines
 import com.app.home.ui.feature.locationpermission.domain.GetLocationActiveUseCase
 import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.FINISH
 import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
@@ -12,12 +13,11 @@ import com.app.home.ui.feature.onboarding.ui.OnboardingUiState
 import com.app.home.ui.feature.onboarding.ui.OnboardingViewModel
 import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -41,48 +41,37 @@ class OnboardingViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        onboardingViewModel = OnboardingViewModel(getHomeLocationActiveUseCase, updateShowOnboardingUseCase)
+        onboardingViewModel =
+            OnboardingViewModel(getHomeLocationActiveUseCase, updateShowOnboardingUseCase)
         coEvery { getOnboardingShowOnboardingUseCase() } returns true
         coEvery { getHomeLocationActiveUseCase() } returns true
     }
 
     @Test
-    fun `when called in the next step and it is not the final screen, verify if the steps value is different`() = runTest {
-        val navigation = mockk<NavController>(relaxed = true)
-        onboardingViewModel.onNextStep(steps = WELCOME, navigation = navigation)
+    fun `when called in the next step and it is not the final screen, verify if the steps value is different`() =
+        runTest {
+            val navigation = mockk<NavController>(relaxed = true)
+            onboardingViewModel.onNextStep(steps = WELCOME, navigation = navigation)
+                .awaitExecuteCoroutines(this)
 
-        advanceUntilIdle()
-
-        val uiState = onboardingViewModel.uiState.value as OnboardingUiState.Data
-        assertTrue(uiState.steps == INTRODUCTION)
-    }
-
-    @Test
-    fun `when called in the next step and it is not the final screen, verify if the steps value is the same`() = runTest {
-        val navigation = mockk<NavController>(relaxed = true)
-
-        onboardingViewModel.onNextStep(steps = WELCOME, navigation = navigation)
-
-        assertTrue(getOnboardingShowOnboardingUseCase())
-    }
+            val uiState = onboardingViewModel.uiState.value as OnboardingUiState.Data
+            assertTrue(uiState.steps == INTRODUCTION)
+        }
 
     @Test
-    fun `when called in the next step and it is the final screen, verify if called update show onboarding tag`() = runTest {
-        val navigation = mockk<NavController>(relaxed = true)
+    fun `when called in the next step and it is the final screen, verify if called update show onboarding tag`() =
+        runTest {
+            val navigation = mockk<NavController>(relaxed = true)
+            coEvery { updateShowOnboardingUseCase() } just Runs
 
-        coEvery { updateShowOnboardingUseCase() } just Runs
-        coEvery { getOnboardingShowOnboardingUseCase() } returns false
+            onboardingViewModel.onNextStep(steps = FINISH, navigation = navigation)
 
-        onboardingViewModel.onNextStep(steps = FINISH, navigation = navigation)
-
-        assertFalse(getOnboardingShowOnboardingUseCase())
-    }
+            coVerify { updateShowOnboardingUseCase() }
+        }
 
     @Test
     fun `when called in the after step, verify if the steps value is different`() = runTest {
-        onboardingViewModel.onRemoveNewStep(steps = INTRODUCTION)
-
-        advanceUntilIdle()
+        onboardingViewModel.onRemoveNewStep(steps = INTRODUCTION).awaitExecuteCoroutines(this)
 
         val uiState = onboardingViewModel.uiState.value as OnboardingUiState.Data
         assertTrue(uiState.steps == WELCOME)

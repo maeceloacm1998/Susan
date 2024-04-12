@@ -27,6 +27,6 @@ class MainCoroutineRule(private val dispatcher: TestDispatcher = StandardTestDis
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun Any?.awaitExecuteCoroutines(testDispatcher: TestScope) = testDispatcher.run {
+fun Any?.awaitExecuteCoroutines(testScope: TestScope) = testScope.run {
     this.advanceUntilIdle()
 }
