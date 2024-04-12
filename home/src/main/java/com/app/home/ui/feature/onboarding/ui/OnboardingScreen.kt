@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.ui.theme.Background
@@ -44,7 +45,7 @@ fun OnboardingWelcomeScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding20))
 
         Text(
-            text = "Bem vindo ao\nSearchMed!",
+            text = stringResource(id = R.string.onboarding_welcome_title),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             color = Primary
@@ -54,8 +55,8 @@ fun OnboardingWelcomeScreen(modifier: Modifier = Modifier) {
 
         Text(
             modifier = Modifier.padding(horizontal = CustomDimensions.padding24),
-            text = "Encontre hospitais próximos rapidamente e com facilidade.",
-            style = MaterialTheme.typography.bodyMedium,
+            text = stringResource(id = R.string.onboarding_welcome_subtitle),
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = Secondary
         )
@@ -83,7 +84,7 @@ fun OnboardingIntroductionScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding20))
 
         Text(
-            text = "Busque por hospitais",
+            text = stringResource(id = R.string.onboarding_introduction_title),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             color = Primary
@@ -93,7 +94,7 @@ fun OnboardingIntroductionScreen(modifier: Modifier = Modifier) {
 
         Text(
             modifier = Modifier.padding(horizontal = CustomDimensions.padding24),
-            text = "Busque por hospitais usando a barra de busca ou explore o mapa interativo para ver as opções ao seu redor.",
+            text = stringResource(id = R.string.onboarding_welcome_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = Secondary
@@ -122,7 +123,7 @@ fun OnboardingFinishScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding20))
 
         Text(
-            text = "Em caso de emegência",
+            text = stringResource(id = R.string.onboarding_finish_title),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             color = Primary
@@ -132,7 +133,7 @@ fun OnboardingFinishScreen(modifier: Modifier = Modifier) {
 
         Text(
             modifier = Modifier.padding(horizontal = CustomDimensions.padding24),
-            text = "Em caso de emergência, pressione o botão de emergência para localizar imediatamente o hospital mais próximo de você.",
+            text = stringResource(id = R.string.onboarding_finish_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             color = Secondary
@@ -143,10 +144,6 @@ fun OnboardingFinishScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun OnboardingWelcomeScreenPreview() {
-    val uiState = OnboardingUiState.Data(
-        steps = OnboardingStepsType.WELCOME,
-        currentLocation = null
-    )
     OnboardingWelcomeScreen()
 }
 
