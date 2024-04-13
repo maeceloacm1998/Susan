@@ -14,6 +14,6 @@ class OnboardingRepositoryImpl(
     }
 
     companion object {
-        private const val ONBOARDING_KEY = "onboarding"
+        const val ONBOARDING_KEY = "onboarding"
     }
 }
