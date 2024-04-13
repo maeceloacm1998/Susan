@@ -1,4 +1,4 @@
-package com.app.home.features.onboarding
+package com.app.home.onboarding
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.app.core.service.sharedpreferences.SharedPreferencesBuilder

@@ -1,4 +1,4 @@
-package com.app.home.features.locationpermission
+package com.app.home.locationpermission
 
 import androidx.activity.ComponentActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -63,6 +63,7 @@ class LocationPermissionViewModelTest {
                 navController = navController,
                 context = context
             ).awaitExecuteCoroutines(this)
+
             coVerifyAll {
                 getLocationUseCase()
                 updateLastCurrentLocationUseCase(location)

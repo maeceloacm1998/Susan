@@ -1,4 +1,4 @@
-package com.app.home.features.onboarding
+package com.app.home.onboarding
 
 import com.app.home.KoinModuleRule
 import com.app.home.MainCoroutineRule
