@@ -7,4 +7,5 @@ interface LocationService {
     suspend fun onRequestLocationUpdates(): Flow<LatLng?>
     suspend fun onUpdateLastCurrentLocation(currentLocation: LatLng)
     suspend fun onRequestLastCurrentLocation(): Flow<LatLng?>
+    fun checkLocationPermission(): Boolean
 }

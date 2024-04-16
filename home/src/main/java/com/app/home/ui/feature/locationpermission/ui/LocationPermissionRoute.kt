@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
-import com.app.core.service.location.utils.LocationUtils.checkLocationPermission
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
@@ -46,7 +45,7 @@ fun LocationPermissionRoute(
 
     LaunchedEffect(lifecycleState) {
         if (lifecycleState == Lifecycle.State.RESUMED) {
-            if (checkLocationPermission(context)) {
+            if (locationViewModel.checkLocationPermission()) {
                 locationViewModel.onGetUserLocation(
                     navController = navController,
                     context = context

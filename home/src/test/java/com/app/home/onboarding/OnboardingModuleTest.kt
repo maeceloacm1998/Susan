@@ -9,7 +9,6 @@ import com.app.home.ui.feature.onboarding.data.OnboardingRepository
 import com.app.home.ui.feature.onboarding.data.OnboardingRepositoryImpl
 import com.app.home.ui.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
 import com.app.home.ui.feature.onboarding.ui.OnboardingViewModel
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
@@ -29,8 +28,9 @@ class OnboardingModuleTest : KoinTest {
         listOf(
             module {
                 single<LocationPermissionRepository> {
-                    LocationPermissionRepositoryImpl(context = mockk(relaxed = true))
+                    LocationPermissionRepositoryImpl(getCheckLocationPermissionUseCase = get())
                 }
+
                 single { UpdateOnboardingShowOnboardingUseCase(onboardingRepository = get()) }
                 single { GetLocationActiveUseCase(locationPermissionRepository = get()) }
                 single<OnboardingRepository> {

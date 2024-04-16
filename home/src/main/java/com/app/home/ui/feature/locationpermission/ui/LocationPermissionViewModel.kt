@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.app.core.routes.Routes
+import com.app.core.service.location.domain.GetCheckLocationPermissionUseCase
 import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
 import com.app.home.ui.feature.locationpermission.domain.OpenManualConfigUseCase
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class LocationPermissionViewModel(
     private val getLocationUseCase: GetLocationUseCase,
     private val updateLastCurrentLocationUseCase: UpdateLastCurrentLocationUseCase,
-    private val openManualConfigUseCase: OpenManualConfigUseCase
+    private val openManualConfigUseCase: OpenManualConfigUseCase,
+    private val getCheckLocationPermissionUseCase: GetCheckLocationPermissionUseCase
 ) : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -35,6 +37,8 @@ class LocationPermissionViewModel(
             }
         }
     }
+
+    fun checkLocationPermission(): Boolean = getCheckLocationPermissionUseCase()
 
     fun onOpenManualConfig(context: Context) {
         openManualConfigUseCase(context as ComponentActivity)

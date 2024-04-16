@@ -3,6 +3,7 @@ package com.app.home.locationpermission
 import androidx.activity.ComponentActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
+import com.app.core.service.location.domain.GetCheckLocationPermissionUseCase
 import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
 import com.app.home.MainCoroutineRule
@@ -35,6 +36,7 @@ class LocationPermissionViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private val getLocationUseCase: GetLocationUseCase = mockk()
+    private val getCheckLocationPermissionUseCase: GetCheckLocationPermissionUseCase = mockk()
     private val updateLastCurrentLocationUseCase: UpdateLastCurrentLocationUseCase = mockk()
     private val openManualConfigUseCase: OpenManualConfigUseCase = mockk()
     private lateinit var locationPermissionViewModel: LocationPermissionViewModel
@@ -44,6 +46,7 @@ class LocationPermissionViewModelTest {
         MockitoAnnotations.initMocks(this)
         locationPermissionViewModel = LocationPermissionViewModel(
             getLocationUseCase = getLocationUseCase,
+            getCheckLocationPermissionUseCase = getCheckLocationPermissionUseCase,
             updateLastCurrentLocationUseCase = updateLastCurrentLocationUseCase,
             openManualConfigUseCase = openManualConfigUseCase
         )

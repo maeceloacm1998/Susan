@@ -1,12 +1,9 @@
 package com.app.home.ui.feature.locationpermission.data
 
-import android.content.Context
-import com.app.core.service.location.utils.LocationUtils
+import com.app.core.service.location.domain.GetCheckLocationPermissionUseCase
 
 class LocationPermissionRepositoryImpl(
-    private val context: Context
+    private val getCheckLocationPermissionUseCase: GetCheckLocationPermissionUseCase
 ): LocationPermissionRepository {
-    override fun isLocationActive(): Boolean {
-        return LocationUtils.checkLocationPermission(context)
-    }
+    override fun isLocationActive(): Boolean = getCheckLocationPermissionUseCase()
 }

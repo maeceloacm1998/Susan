@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Build
 import android.os.Looper
 import androidx.annotation.RequiresApi
@@ -12,6 +13,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.channels.awaitClose
@@ -21,13 +23,14 @@ import kotlinx.coroutines.flow.callbackFlow
 
 class LocationServiceImpl(
     private val context: Context,
-    private val locationClient: FusedLocationProviderClient
 ) : LocationService {
     private val location: MutableStateFlow<LatLng?> = MutableStateFlow(null)
 
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.S)
     override suspend fun onRequestLocationUpdates(): Flow<LatLng?> = callbackFlow {
+        val locationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+
         if (!context.hasLocationPermission()) {
             trySend(null)
             return@callbackFlow
@@ -63,6 +66,22 @@ class LocationServiceImpl(
     }
 
     override suspend fun onRequestLastCurrentLocation(): Flow<LatLng?> = location
+
+    override fun checkLocationPermission(): Boolean {
+        return isGPSEnabled(context) && isLocationPermissionGranted(context)
+    }
+
+    private fun isLocationPermissionGranted(context: Context): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun isGPSEnabled(context: Context): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
 
     companion object {
         private const val INTERVAL_DELAY: Long = 10000L
