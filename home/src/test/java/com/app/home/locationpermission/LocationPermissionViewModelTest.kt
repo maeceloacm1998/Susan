@@ -8,8 +8,8 @@ import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
 import com.app.home.MainCoroutineRule
 import com.app.home.awaitExecuteCoroutines
-import com.app.home.ui.feature.locationpermission.domain.OpenManualConfigUseCase
-import com.app.home.ui.feature.locationpermission.ui.LocationPermissionViewModel
+import com.app.home.feature.locationpermission.domain.OpenManualConfigUseCase
+import com.app.home.feature.locationpermission.ui.LocationPermissionViewModel
 import com.google.android.gms.maps.model.LatLng
 import io.mockk.Runs
 import io.mockk.coEvery

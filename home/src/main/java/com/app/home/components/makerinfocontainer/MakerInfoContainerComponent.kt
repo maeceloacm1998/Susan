@@ -22,9 +22,8 @@ import com.app.core.components.buttons.TextButtonComponent
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
 import com.app.home.R
-import com.app.home.ui.components.rating.RatingComponent
-import com.app.home.ui.components.rating.RatingComponentModel
-
+import com.app.home.components.rating.RatingComponent
+import com.app.home.components.rating.RatingComponentModel
 
 @Composable
 fun MakerInfoContainer(title: String?) {

@@ -1,7 +1,7 @@
 package com.app.home.feature.home.domain
 
-import com.app.home.ui.feature.home.data.HomeRepository
-import com.app.home.ui.feature.locationpermission.domain.GetLocationActiveUseCase
+import com.app.home.feature.home.data.HomeRepository
+import com.app.home.feature.locationpermission.domain.GetLocationActiveUseCase
 import com.google.android.gms.maps.model.LatLng
 
 class GetHomeCurrentLocationUseCase(

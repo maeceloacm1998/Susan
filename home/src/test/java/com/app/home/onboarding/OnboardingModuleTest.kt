@@ -2,13 +2,13 @@ package com.app.home.onboarding
 
 import com.app.home.KoinModuleRule
 import com.app.home.MainCoroutineRule
-import com.app.home.ui.feature.locationpermission.data.LocationPermissionRepository
-import com.app.home.ui.feature.locationpermission.data.LocationPermissionRepositoryImpl
-import com.app.home.ui.feature.locationpermission.domain.GetLocationActiveUseCase
-import com.app.home.ui.feature.onboarding.data.OnboardingRepository
-import com.app.home.ui.feature.onboarding.data.OnboardingRepositoryImpl
-import com.app.home.ui.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
-import com.app.home.ui.feature.onboarding.ui.OnboardingViewModel
+import com.app.home.feature.locationpermission.data.LocationPermissionRepository
+import com.app.home.feature.locationpermission.data.LocationPermissionRepositoryImpl
+import com.app.home.feature.locationpermission.domain.GetLocationActiveUseCase
+import com.app.home.feature.onboarding.data.OnboardingRepository
+import com.app.home.feature.onboarding.data.OnboardingRepositoryImpl
+import com.app.home.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
+import com.app.home.feature.onboarding.ui.OnboardingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertNotNull
 import org.junit.Rule

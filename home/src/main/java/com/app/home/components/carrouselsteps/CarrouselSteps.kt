@@ -3,7 +3,6 @@ package com.app.home.components.carrouselsteps
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,10 +23,10 @@ import com.app.core.ui.theme.Background
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.GrayLight
 import com.app.core.ui.theme.Primary
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.FINISH
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.WELCOME
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.FINISH
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 
 @Composable
 fun CarrouselSteps(

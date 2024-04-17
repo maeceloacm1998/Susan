@@ -1,6 +1,7 @@
 package com.app.home.feature.onboarding.ui
 
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import com.google.android.gms.maps.model.LatLng
 
 sealed interface OnboardingUiState {
@@ -11,7 +12,7 @@ sealed interface OnboardingUiState {
 }
 
 data class OnBoardingViewModelState(
-    val steps: OnboardingStepsType = OnboardingStepsType.WELCOME,
+    val steps: OnboardingStepsType = WELCOME,
     val currentLocation: LatLng? = null
 ) {
     fun toUiState(): OnboardingUiState =

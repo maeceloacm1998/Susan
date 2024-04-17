@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.components.screenerror.ScreenError
 import com.app.core.components.screenloading.LoadingContent
 import com.app.core.ui.theme.Background
-import com.app.home.ui.components.makerinfocontainer.MakerInfoContainer
-import com.app.home.ui.components.searchfooter.FooterComponent
+import com.app.home.components.makerinfocontainer.MakerInfoContainer
+import com.app.home.components.searchfooter.FooterComponent
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker

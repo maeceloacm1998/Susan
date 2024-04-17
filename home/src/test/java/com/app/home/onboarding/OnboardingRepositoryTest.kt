@@ -3,9 +3,9 @@ package com.app.home.onboarding
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.app.core.service.sharedpreferences.SharedPreferencesBuilder
 import com.app.home.MainCoroutineRule
-import com.app.home.ui.feature.onboarding.data.OnboardingRepository
-import com.app.home.ui.feature.onboarding.data.OnboardingRepositoryImpl
-import com.app.home.ui.feature.onboarding.data.OnboardingRepositoryImpl.Companion.ONBOARDING_KEY
+import com.app.home.feature.onboarding.data.OnboardingRepository
+import com.app.home.feature.onboarding.data.OnboardingRepositoryImpl
+import com.app.home.feature.onboarding.data.OnboardingRepositoryImpl.Companion.ONBOARDING_KEY
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just

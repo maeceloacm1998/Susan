@@ -1,8 +1,8 @@
 package com.app.home.di
 
-import com.app.home.ui.feature.locationpermission.data.LocationPermissionRepository
-import com.app.home.ui.feature.locationpermission.data.LocationPermissionRepositoryImpl
-import com.app.home.ui.feature.locationpermission.ui.LocationPermissionViewModel
+import com.app.home.feature.locationpermission.data.LocationPermissionRepository
+import com.app.home.feature.locationpermission.data.LocationPermissionRepositoryImpl
+import com.app.home.feature.locationpermission.ui.LocationPermissionViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

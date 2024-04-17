@@ -1,7 +1,7 @@
 package com.app.home.di
 
-import com.app.home.ui.feature.locationpermission.domain.GetLocationActiveUseCase
-import com.app.home.ui.feature.locationpermission.domain.OpenManualConfigUseCase
+import com.app.home.feature.locationpermission.domain.GetLocationActiveUseCase
+import com.app.home.feature.locationpermission.domain.OpenManualConfigUseCase
 import org.koin.dsl.module
 
 object LocationPermissionUseCaseModule {

@@ -2,10 +2,10 @@ package com.app.home.onboarding
 
 import com.app.home.KoinModuleRule
 import com.app.home.MainCoroutineRule
-import com.app.home.ui.feature.onboarding.data.OnboardingRepository
-import com.app.home.ui.feature.onboarding.data.OnboardingRepositoryImpl
-import com.app.home.ui.feature.onboarding.domain.GetOnboardingShowOnboardingUseCase
-import com.app.home.ui.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
+import com.app.home.feature.onboarding.data.OnboardingRepository
+import com.app.home.feature.onboarding.data.OnboardingRepositoryImpl
+import com.app.home.feature.onboarding.domain.GetOnboardingShowOnboardingUseCase
+import com.app.home.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test

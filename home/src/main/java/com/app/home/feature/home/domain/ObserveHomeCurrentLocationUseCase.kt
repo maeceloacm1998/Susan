@@ -1,6 +1,6 @@
 package com.app.home.feature.home.domain
 
-import com.app.home.ui.feature.home.data.HomeRepository
+import com.app.home.feature.home.data.HomeRepository
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.Flow
 

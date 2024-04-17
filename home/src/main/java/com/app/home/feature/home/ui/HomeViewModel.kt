@@ -4,8 +4,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.home.ui.feature.home.domain.GetHomeCurrentLocationUseCase
-import com.app.home.ui.feature.home.domain.ObserveHomeCurrentLocationUseCase
+import com.app.home.feature.home.domain.GetHomeCurrentLocationUseCase
+import com.app.home.feature.home.domain.ObserveHomeCurrentLocationUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

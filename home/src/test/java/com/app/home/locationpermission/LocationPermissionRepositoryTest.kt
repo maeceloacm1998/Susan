@@ -3,8 +3,8 @@ package com.app.home.locationpermission
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.app.core.service.location.domain.GetCheckLocationPermissionUseCase
 import com.app.home.MainCoroutineRule
-import com.app.home.ui.feature.locationpermission.data.LocationPermissionRepository
-import com.app.home.ui.feature.locationpermission.data.LocationPermissionRepositoryImpl
+import com.app.home.feature.locationpermission.data.LocationPermissionRepository
+import com.app.home.feature.locationpermission.data.LocationPermissionRepositoryImpl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

@@ -1,6 +1,6 @@
 package com.app.home.feature.home.domain
 
-import com.app.home.ui.feature.home.data.HomeRepository
+import com.app.home.feature.home.data.HomeRepository
 
 class GetNearbyHospitalsUseCase(
     private val homeRepository: HomeRepository

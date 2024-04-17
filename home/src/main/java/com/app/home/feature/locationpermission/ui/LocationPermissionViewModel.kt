@@ -11,7 +11,7 @@ import com.app.core.routes.Routes
 import com.app.core.service.location.domain.GetCheckLocationPermissionUseCase
 import com.app.core.service.location.domain.GetLocationUseCase
 import com.app.core.service.location.domain.UpdateLastCurrentLocationUseCase
-import com.app.home.ui.feature.locationpermission.domain.OpenManualConfigUseCase
+import com.app.home.feature.locationpermission.domain.OpenManualConfigUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 

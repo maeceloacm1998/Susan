@@ -12,11 +12,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.utils.AnimatedUtils.animatedTransitionPage
-import com.app.home.ui.components.carrouselsteps.CarrouselSteps
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.FINISH
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
-import com.app.home.ui.feature.onboarding.data.models.OnboardingStepsType.WELCOME
+import com.app.home.components.carrouselsteps.CarrouselSteps
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.FINISH
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
+import com.app.home.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import org.koin.androidx.compose.koinViewModel
 

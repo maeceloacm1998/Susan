@@ -1,6 +1,6 @@
 package com.app.home.feature.home.ui
 
-import com.app.home.ui.feature.home.data.models.ErrorMessage
+import com.app.home.feature.home.data.models.ErrorMessage
 import com.google.android.gms.maps.model.LatLng
 
 sealed interface HomeUiState {
