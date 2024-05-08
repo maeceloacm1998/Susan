@@ -9,10 +9,12 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.components.textfield.TextFieldCustom
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
+import com.app.home.R
 
 @Composable
 fun SearchBarComponent(
@@ -32,7 +34,7 @@ fun SearchBarComponent(
                     top = CustomDimensions.padding5
                 ),
             startIconImageVector = Icons.Filled.Search,
-            label = "Busque por um hospital",
+            label = stringResource(id = R.string.home_search_bar_hint),
             focusedContainerColor = Primary,
             onChangeListener = {}
         )

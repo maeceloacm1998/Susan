@@ -13,10 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.components.buttons.ButtonComponent
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.RedDark
+import com.app.home.R
 
 @Composable
 fun EmergencyFooterComponent(
@@ -35,7 +37,7 @@ fun EmergencyFooterComponent(
         ) {
             ButtonComponent(
                 modifier = Modifier.height(CustomDimensions.padding40),
-                title = "Clique aqui para ligar para o Samu - 192",
+                title = stringResource(id = R.string.home_emergency_phone_title),
                 containerColor = Color.White,
                 titleColor = RedDark,
                 onButtonListener = onClickEmergencyPhone
@@ -62,7 +64,7 @@ fun EmergencyFooterComponent(
                     )
             ) {
                 ButtonComponent(
-                    title = "Buscar emergência",
+                    title = stringResource(id = R.string.home_search_emergency_button),
                     containerColor = RedDark,
                     titleColor = Color.White,
                     imageVector = Icons.Filled.CrisisAlert,

@@ -8,4 +8,10 @@
     <string name="onboarding_introduction_subtitle">Busque por hospitais usando a barra de busca ou explore o mapa interativo para ver as opções ao seu redor.</string>
     <string name="onboarding_finish_title">Em caso de emegência</string>
     <string name="onboarding_finish_subtitle">Em caso de emergência, pressione o botão de emergência para localizar imediatamente o hospital mais próximo de você.</string>
+
+    // HOME
+    <string name="home_search_bar_hint">Busque por um hospital</string>
+    <string name="home_search_emergency_button">Buscar Emergência</string>
+    <string name="home_emergency_phone_title">Clique aqui para ligar para o Samu - 192</string>
+
 </resources>
