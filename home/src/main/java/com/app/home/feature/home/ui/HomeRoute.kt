@@ -1,9 +1,11 @@
 package com.app.home.feature.home.ui
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.core.components.screenloading.ScreenLoading
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -20,11 +22,14 @@ fun HomeRoute(
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val cameraState = rememberCameraPositionState()
+    val context: Context = LocalContext.current
 
     HomeRoute(
         uiState = uiState,
         cameraState = cameraState,
         onInfoWindowClick = {},
+        onClickEmergencyPhone = { homeViewModel.onClickEmergencyPhone(context) },
+        onClickSearchEmergency = {}
     )
 }
 
@@ -35,13 +40,17 @@ fun HomeRoute(
     uiState: HomeUiState,
     cameraState: CameraPositionState,
     onInfoWindowClick: (Marker) -> Unit,
+    onClickEmergencyPhone: () -> Unit,
+    onClickSearchEmergency: () -> Unit
 ) {
     when {
         uiState.isLoading -> ScreenLoading()
         else -> HomeScreen(
             uiState = uiState,
             cameraState = cameraState,
-            onInfoWindowClick = onInfoWindowClick
+            onInfoWindowClick = onInfoWindowClick,
+            onClickEmergencyPhone = onClickEmergencyPhone,
+            onClickSearchEmergency = onClickSearchEmergency
         )
     }
 }

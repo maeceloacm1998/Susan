@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.ui.theme.Error
 import com.app.core.ui.theme.GrayDark
 
@@ -70,10 +71,13 @@ fun TextFieldCustom(
         },
         placeholder = { Text(placeholder, color = GrayDark) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = GrayDark, errorLabelColor = Error,
+            focusedBorderColor = focusedContainerColor, errorLabelColor = Error,
+            focusedTextColor = focusedContainerColor,
+            cursorColor = focusedContainerColor,
+            focusedTrailingIconColor = focusedContainerColor,
+
             containerColor = containerColor,
-            unfocusedBorderColor = GrayDark,
-            focusedTextColor = GrayDark
+            unfocusedBorderColor = GrayDark
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType, imeAction = imeAction
@@ -83,9 +87,11 @@ fun TextFieldCustom(
         maxLines = maxLines,
         isError = error,
         supportingText = {
-            Text(
-                supportText, color = if (error) Error else GrayDark
-            )
+            if(supportText.isNotBlank()) {
+                Text(
+                    supportText, color = if (error) Error else GrayDark
+                )
+            }
         },
         leadingIcon = {
             IconButton(onClick = { startIconListener?.let { it() } }) {
@@ -122,5 +128,15 @@ fun TextFieldCustom(
                 }
             }
         },
+    )
+}
+
+@Preview
+@Composable
+fun TextFieldCustomPreview() {
+    TextFieldCustom(
+        label = "Label",
+        placeholder = "Placeholder",
+        onChangeListener = {}
     )
 }

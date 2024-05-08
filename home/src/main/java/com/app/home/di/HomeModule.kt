@@ -21,6 +21,7 @@ object HomeModule {
         viewModel {
             HomeViewModel(
                 getHomeCurrentLocationUseCase = get(),
+                openPhoneDialogUseCase = get(),
                 observeHomeCurrentLocationUseCase = get(),
             )
         }

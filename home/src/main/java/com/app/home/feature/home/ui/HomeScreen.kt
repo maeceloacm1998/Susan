@@ -1,17 +1,20 @@
 package com.app.home.feature.home.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.app.core.components.screenerror.ScreenError
 import com.app.core.components.screenloading.LoadingContent
-import com.app.core.ui.theme.Background
+import com.app.core.ui.theme.CustomDimensions
+import com.app.home.components.emergencyfooter.EmergencyFooterComponent
 import com.app.home.components.makerinfocontainer.MakerInfoContainer
-import com.app.home.components.searchfooter.FooterComponent
+import com.app.home.components.searchbar.SearchBarComponent
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -27,7 +30,9 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun HomeScreen(
     uiState: HomeUiState,
     cameraState: CameraPositionState,
-    onInfoWindowClick: (Marker) -> Unit
+    onInfoWindowClick: (Marker) -> Unit,
+    onClickEmergencyPhone: () -> Unit,
+    onClickSearchEmergency: () -> Unit
 ) {
     LoadingContent(
         empty = when (uiState) {
@@ -35,6 +40,7 @@ fun HomeScreen(
                 check(uiState is HomeUiState.HasHospital)
                 checkNotNull(uiState.hospitals?.isEmpty())
             }
+
             is HomeUiState.NoHospital -> false
         },
         emptyContent = { ScreenError() },
@@ -47,31 +53,59 @@ fun HomeScreen(
             HomeContainer(
                 uiState = uiState,
                 cameraState = cameraState,
-                onInfoWindowClick = onInfoWindowClick
+                onInfoWindowClick = onInfoWindowClick,
+                onClickEmergencyPhone = onClickEmergencyPhone,
+                onClickSearchEmergency = onClickSearchEmergency
             )
         }
     )
-
 }
 
 @Composable
 fun HomeContainer(
     uiState: HomeUiState.HasHospital,
     cameraState: CameraPositionState,
-    onInfoWindowClick: (Marker) -> Unit
+    onInfoWindowClick: (Marker) -> Unit,
+    onClickSearchEmergency: () -> Unit,
+    onClickEmergencyPhone: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Background)
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize()
     ) {
+        val (mapsContainer, searchBar, footerComponent) = createRefs()
+
         MapsContainer(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.constrainAs(mapsContainer) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            },
             hospitals = uiState.hospitals.orEmpty(),
             onInfoWindowClick = onInfoWindowClick,
             cameraState = cameraState
         )
-        FooterComponent()
+
+        SearchBarComponent(
+            modifier = Modifier
+                .constrainAs(searchBar) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .padding(CustomDimensions.padding10)
+                .clip(RoundedCornerShape(CustomDimensions.padding20))
+        )
+
+        EmergencyFooterComponent(
+            modifier = Modifier
+                .constrainAs(footerComponent) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+            onClickEmergencyPhone = onClickEmergencyPhone,
+            onClickSearchEmergency = onClickSearchEmergency
+        )
     }
 }
 
@@ -82,29 +116,24 @@ fun MapsContainer(
     cameraState: CameraPositionState,
     onInfoWindowClick: (Marker) -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
+    GoogleMap(
+        modifier = modifier.fillMaxSize(),
+        cameraPositionState = cameraState,
+        properties = MapProperties(
+            isMyLocationEnabled = true,
+            mapType = MapType.NORMAL,
+            isTrafficEnabled = false
+        )
     ) {
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraState,
-            properties = MapProperties(
-                isMyLocationEnabled = true,
-                mapType = MapType.NORMAL,
-                isTrafficEnabled = false
-            )
-        ) {
-            hospitals.forEach { position ->
-                MarkerInfoWindowContent(
-                    state = MarkerState(position = position),
-                    title = "Hyde Park",
-                    snippet = "Marker in Hyde Park",
-                    draggable = true,
-                    onInfoWindowClick = onInfoWindowClick
-                ) { marker ->
-                    MakerInfoContainer(marker.title)
-                }
+        hospitals.forEach { position ->
+            MarkerInfoWindowContent(
+                state = MarkerState(position = position),
+                title = "Hyde Park",
+                snippet = "Marker in Hyde Park",
+                draggable = true,
+                onInfoWindowClick = onInfoWindowClick
+            ) { marker ->
+                MakerInfoContainer(marker.title)
             }
         }
     }
@@ -127,13 +156,20 @@ fun HomeScreenPreview() {
     val cameraState = rememberCameraPositionState()
 
     HomeScreen(uiState = uiState,
-        cameraState = cameraState, onInfoWindowClick = {})
+        cameraState = cameraState,
+        onInfoWindowClick = {},
+        onClickEmergencyPhone = {},
+        onClickSearchEmergency = {}
+    )
 }
 
 @Preview
 @Composable
 fun FooterComponentPreview() {
-    FooterComponent()
+    EmergencyFooterComponent(
+        onClickEmergencyPhone = {},
+        onClickSearchEmergency = {}
+    )
 }
 
 @Preview
