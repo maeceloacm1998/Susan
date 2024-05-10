@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.app.core.components.buttons.TextButtonComponent
 import com.app.core.ui.theme.CustomDimensions
@@ -92,4 +93,10 @@ fun MakerInfoContainer(title: String?) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun MakeInfoContainerPreview() {
+    MakerInfoContainer(title = "dale")
 }
