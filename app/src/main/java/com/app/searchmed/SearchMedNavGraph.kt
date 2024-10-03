@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.app.core.routes.Routes
 import com.app.core.utils.AnimatedUtils.animatedTransitionFadeIn
 import com.app.core.utils.AnimatedUtils.animatedTransitionFadeOut
+import com.app.home.feature.chat.ui.ChatRoute
 import com.app.home.feature.home.ui.HomeRoute
 import com.app.home.feature.locationpermission.ui.LocationPermissionRoute
 import com.app.home.feature.onboarding.ui.OnboardingRoute
@@ -22,7 +23,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 fun SearchMedNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Routes.Home.route
+    startDestination: String = Routes.Chat.route
 ) {
     NavHost(
         navController = navController,
@@ -39,8 +40,8 @@ fun SearchMedNavGraph(
             LocationPermissionRoute(navController)
         }
 
-        composable(route = Routes.Home.route) {
-            HomeRoute()
+        composable(route = Routes.Chat.route) {
+            ChatRoute()
         }
     }
 }

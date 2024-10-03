@@ -53,7 +53,7 @@ class LocationPermissionViewModel(
     }
 
     private fun onGoToHome(navigation: NavController) {
-        navigation.navigate(Routes.Home.route) {
+        navigation.navigate(Routes.Chat.route) {
             popUpTo(Routes.CheckPermissions.route) {
                 inclusive = true
             }

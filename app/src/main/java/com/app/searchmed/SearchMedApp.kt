@@ -23,7 +23,7 @@ fun SearchMedApp() {
     val startDestination = when {
         getOnboardingShowOnboardingUseCase() -> Routes.Onboarding.route
         !getLocationActiveUseCase() -> Routes.CheckPermissions.route
-        else -> Routes.Home.route
+        else -> Routes.Chat.route
     }
 
     SearchMedTheme {

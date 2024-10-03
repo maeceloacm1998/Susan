@@ -6,8 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.core.service.phonedialog.OpenPhoneDialogUseCase
-import com.app.home.feature.home.domain.GetHomeCurrentLocationUseCase
-import com.app.home.feature.home.domain.ObserveHomeCurrentLocationUseCase
+import com.app.home.feature.chat.domain.GetChatCurrentLocationUseCase
+import com.app.home.feature.chat.domain.ObserveChatCurrentLocationUseCase
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.S)
 class HomeViewModel(
-    private val getHomeCurrentLocationUseCase: GetHomeCurrentLocationUseCase,
+    private val getHomeCurrentLocationUseCase: GetChatCurrentLocationUseCase,
     private val openPhoneDialogUseCase: OpenPhoneDialogUseCase,
-    private val observeHomeCurrentLocationUseCase: ObserveHomeCurrentLocationUseCase,
+    private val observeHomeCurrentLocationUseCase: ObserveChatCurrentLocationUseCase,
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
 

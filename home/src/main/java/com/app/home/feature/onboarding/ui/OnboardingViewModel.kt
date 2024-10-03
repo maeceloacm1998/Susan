@@ -72,7 +72,7 @@ class OnboardingViewModel(
     }
 
     private fun onGoToHome(navigation: NavController) {
-        navigation.navigate(Routes.Home.route) {
+        navigation.navigate(Routes.Chat.route) {
             popUpTo(Routes.Onboarding.route) {
                 inclusive = true
             }

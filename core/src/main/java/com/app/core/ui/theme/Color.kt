@@ -2,15 +2,15 @@ package com.app.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Primary = Color(0xFF2D6A45)
-val Secondary = Color(0xFF4F6354)
+val Primary = Color(0xFF001E27)
+val Secondary = Color(0xFFFF4E4E)
 val PurpleLight = Color(0xFF6A619D)
 val PurpleMedium = Color(0xFF202052)
 val PurpleDark = Color(0xFF1E1325)
 val BrowLight = Color(0xFFFFB601)
 val BrowDark = Color(0xFFD99734)
 val BlueDark = Color(0xFF1A212D)
-val Background = Color(0xFFFAFAFA)
+val Background = Color(0xFFF7F7FC)
 val BackgroundTransparent = Color(0xBF021533)
 val RedDark = Color(0xFFB32457)
 val SoftBlack = Color(0xFF1C1C1C)
