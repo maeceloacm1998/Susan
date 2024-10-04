@@ -8,6 +8,6 @@ object ServiceDI {
     val instance = listOf(
         SharedPreferencesModule.modules,
         LocationServiceModule.modules,
-        PhoneDialogModule.modules
+        PhoneDialogModule.modules,
     )
 }

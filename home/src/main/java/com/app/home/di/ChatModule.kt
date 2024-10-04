@@ -20,17 +20,16 @@ object ChatModule {
             )
         }
 
-        single { GetChatCurrentLocationUseCase(
-            chatRepository = get(),
-            getLocationActiveUseCase = get()
-        ) }
+        single {
+            GetChatCurrentLocationUseCase(
+                chatRepository = get(),
+                getLocationActiveUseCase = get()
+            )
+        }
         single { ObserveChatCurrentLocationUseCase(chatRepository = get()) }
 
         viewModel {
-            ChatViewModel(
-                getChatCurrentLocationUseCase = get(),
-                observeChatCurrentLocationUseCase = get(),
-            )
+            ChatViewModel()
         }
     }
 }
