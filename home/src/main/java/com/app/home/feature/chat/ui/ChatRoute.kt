@@ -8,7 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -68,7 +67,7 @@ fun ChatRoute(
     ) { result ->
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             val matches = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-            chatViewModel.onCreateRecordingMessage(
+            chatViewModel.onCreateMessage(
                 context = context,
                 text = matches?.get(0) ?: "",
                 timer = timer
@@ -76,10 +75,6 @@ fun ChatRoute(
         }
         chatViewModel.onStopRecordingAudio()
         timer = 0
-    }
-
-    LaunchedEffect(Unit) {
-        chatViewModel.onUpdateMessage()
     }
 
     RequestAudioPermission(

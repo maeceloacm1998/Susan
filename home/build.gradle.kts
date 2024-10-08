@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("kotlin-kapt")
 }
 
 android {
@@ -94,11 +93,6 @@ dependencies {
 
     //Constraint layout
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-
-    //ROOM
-    implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
 
     testImplementation("io.insert-koin:koin-test:3.5.0")
     testImplementation("io.mockk:mockk:1.13.9")
