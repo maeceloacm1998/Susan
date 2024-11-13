@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,7 +36,7 @@ fun ChatScreen(
     uiState: ChatUiState,
     onCreateNewChatListener: () -> Unit,
     onPressStartAudio: () -> Unit,
-    onTimerChange: (Int) -> Unit,
+    onPressSendMessage: (message: String) -> Unit,
     timer: Int
 ) {
     Column(
@@ -49,8 +49,8 @@ fun ChatScreen(
         MessageContainer(
             uiState = uiState,
             onPressStartAudio = onPressStartAudio,
-            onTimerChange = onTimerChange,
-            timer = timer
+            timer = timer,
+            onPressSendMessage = onPressSendMessage
         )
     }
 }
@@ -85,7 +85,7 @@ fun ChatContainer(
 fun MessageContainer(
     uiState: ChatUiState,
     onPressStartAudio: () -> Unit,
-    onTimerChange: (Int) -> Unit,
+    onPressSendMessage: (message: String) -> Unit,
     timer: Int = 0
 ) {
     Column(
@@ -106,8 +106,6 @@ fun MessageContainer(
             if (uiState.recordAudio) {
                 AudioRecordingButton(
                     modifier = Modifier.weight(1f),
-                    isPressed = uiState.recordAudio,
-                    onTimerChange = onTimerChange,
                     timer = timer,
                 )
             } else {
@@ -115,7 +113,7 @@ fun MessageContainer(
                     value = message,
                     onValueChange = { message = it },
                     label = "Digite sua emergência aqui...",
-                    onPressDoneListener = { /* Handle done action */ },
+                    onPressDoneListener = { onPressSendMessage(message) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -126,12 +124,20 @@ fun MessageContainer(
                     .weight(0.25f),
                 horizontalAlignment = Alignment.End
             ) {
-                ExpandableButton(
-                    modifier = Modifier.padding(start = CustomDimensions.padding10),
-                    onClick = { /* Handle click action */ },
-                    isPressed = uiState.recordAudio,
-                    onPressStart = onPressStartAudio,
-                )
+                if(message.isNotBlank()) {
+                    ExpandableButton(
+                        modifier = Modifier.padding(start = CustomDimensions.padding10),
+                        icon = Icons.Filled.Send,
+                        isPressed = false,
+                        onPressStart = { onPressSendMessage(message) },
+                    )
+                } else {
+                    ExpandableButton(
+                        modifier = Modifier.padding(start = CustomDimensions.padding10),
+                        isPressed = uiState.recordAudio,
+                        onPressStart = onPressStartAudio,
+                    )
+                }
             }
         }
     }
@@ -151,7 +157,7 @@ fun ChatScreenPreview() {
         ),
         onCreateNewChatListener = { },
         onPressStartAudio = { },
-        onTimerChange = { },
+        onPressSendMessage = { },
         timer = 0
     )
 }
@@ -169,7 +175,7 @@ fun ChatInitialScreenPreview() {
         ),
         onCreateNewChatListener = { },
         onPressStartAudio = { },
-        onTimerChange = { },
+        onPressSendMessage = { },
         timer = 0
     )
 }
@@ -202,7 +208,7 @@ fun MessageContainerPreview() {
             recordAudio = false
         ),
         onPressStartAudio = { },
-        onTimerChange = { },
+        onPressSendMessage = { },
         timer = 0
     )
 }

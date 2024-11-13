@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.app.core.ui.theme.CustomDimensions
@@ -73,5 +74,16 @@ fun TextFieldChat(
         ),
         keyboardActions = KeyboardActions(onDone = { onPressDoneListener() }),
         maxLines = Int.MAX_VALUE // Allow multi-line input
+    )
+}
+
+@Preview
+@Composable
+fun TextFieldChatPreview() {
+    TextFieldChat(
+        value = "",
+        onValueChange = {},
+        label = "Type a message",
+        onPressDoneListener = {}
     )
 }

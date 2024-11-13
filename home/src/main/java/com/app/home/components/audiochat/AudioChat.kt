@@ -12,42 +12,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
 import com.app.core.ui.theme.Secondary
-import kotlinx.coroutines.delay
 
 @Composable
 fun AudioRecordingButton(
     modifier: Modifier = Modifier,
-    isPressed: Boolean,
-    onTimerChange: (Int) -> Unit,
     timer: Int,
     minHeight: Dp = 40.dp,
     maxHeight: Dp = 55.dp,
     minWidth: Dp = 0.dp,
     maxWidth: Dp = 280.dp
 ) {
-    LaunchedEffect(isPressed) {
-        if (isPressed) {
-            var currentTimer = timer
-            while (isPressed) {
-                delay(1000L)
-                currentTimer++
-                onTimerChange(currentTimer)
-            }
-        } else {
-            onTimerChange(0)
-        }
-    }
-
     Row(
         modifier = modifier
             .background(Color.White, shape = RoundedCornerShape(CustomDimensions.padding40))
@@ -75,4 +59,10 @@ fun AudioRecordingButton(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun AudioRecordingButtonPreview() {
+    AudioRecordingButton(timer = 0)
 }

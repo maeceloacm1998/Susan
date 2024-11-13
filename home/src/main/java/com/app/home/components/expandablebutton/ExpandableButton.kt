@@ -16,17 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.app.core.ui.theme.Secondary
+
 @Composable
 fun ExpandableButton(
     modifier: Modifier = Modifier,
     icon: ImageVector = Icons.Filled.Mic,
     isPressed: Boolean,
     onPressStart: () -> Unit,
-    onClick: () -> Unit
 ) {
-    val size by animateDpAsState(if (isPressed) 58.dp else 50.dp)
+    val size by animateDpAsState(
+        targetValue = if (isPressed) 58.dp else 50.dp,
+        label = "ExpandableButtonSize"
+    )
 
     Box(
         modifier = modifier
@@ -36,8 +40,9 @@ fun ExpandableButton(
                 detectTapGestures(onPress = {
                     onPressStart()
                     tryAwaitRelease()
-                }, onTap = { onClick() })
-            }, contentAlignment = Alignment.Center
+                })
+            },
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
@@ -45,4 +50,13 @@ fun ExpandableButton(
             tint = Color.White
         )
     }
+}
+
+@Preview
+@Composable
+fun ExpandableButtonPreview() {
+    ExpandableButton(
+        isPressed = false,
+        onPressStart = {}
+    )
 }
