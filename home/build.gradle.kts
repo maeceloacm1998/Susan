@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
