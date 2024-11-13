@@ -34,56 +34,18 @@ fun OnboardingWelcomeScreen(modifier: Modifier = Modifier) {
     ) {
         Image(
             modifier = Modifier.size(
-                height = CustomDimensions.padding250,
-                width = CustomDimensions.padding250
+                height = CustomDimensions.padding150,
+                width = CustomDimensions.padding150
             ),
-            painter = painterResource(id = R.drawable.ic_search_med_onboarding_1),
-            contentDescription = "onboarding image 1"
+            painter = painterResource(id = R.drawable.susan_onboarding_rounded),
+            contentDescription = "susan logo"
         )
 
         Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding20))
-
-        Text(
-            text = stringResource(id = R.string.onboarding_welcome_title),
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-            color = Primary
-        )
-
-        Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding10))
 
         Text(
             modifier = Modifier.padding(horizontal = CustomDimensions.padding24),
-            text = stringResource(id = R.string.onboarding_welcome_subtitle),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-            color = Secondary
-        )
-    }
-}
-
-@Composable
-fun OnboardingIntroductionScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Background),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Image(
-            modifier = Modifier.size(
-                height = CustomDimensions.padding250,
-                width = CustomDimensions.padding250
-            ),
-            painter = painterResource(id = R.drawable.ic_search_med_onboarding_2),
-            contentDescription = "onboarding image 2"
-        )
-
-        Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding20))
-
-        Text(
-            text = stringResource(id = R.string.onboarding_introduction_title),
+            text = stringResource(id = R.string.onboarding_welcome_title),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             color = Primary
@@ -96,7 +58,7 @@ fun OnboardingIntroductionScreen(modifier: Modifier = Modifier) {
             text = stringResource(id = R.string.onboarding_welcome_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            color = Secondary
+            color = Primary
         )
     }
 }
@@ -115,8 +77,8 @@ fun OnboardingFinishScreen(modifier: Modifier = Modifier) {
                 height = CustomDimensions.padding250,
                 width = CustomDimensions.padding250
             ),
-            painter = painterResource(id = R.drawable.ic_search_med_onboarding_3),
-            contentDescription = "onboarding image 2"
+            painter = painterResource(id = R.drawable.ic_onboarding_conversation),
+            contentDescription = "logo chat"
         )
 
         Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding20))
@@ -135,7 +97,7 @@ fun OnboardingFinishScreen(modifier: Modifier = Modifier) {
             text = stringResource(id = R.string.onboarding_finish_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            color = Secondary
+            color = Primary
         )
     }
 }
@@ -145,13 +107,6 @@ fun OnboardingFinishScreen(modifier: Modifier = Modifier) {
 fun OnboardingWelcomeScreenPreview() {
     OnboardingWelcomeScreen()
 }
-
-@Preview
-@Composable
-fun OnboardingIntroductionScreenPreview() {
-    OnboardingIntroductionScreen()
-}
-
 
 @Preview
 @Composable

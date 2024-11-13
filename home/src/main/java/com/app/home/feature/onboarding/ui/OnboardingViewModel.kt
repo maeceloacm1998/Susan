@@ -7,7 +7,6 @@ import com.app.core.routes.Routes
 import com.app.home.feature.locationpermission.domain.GetLocationActiveUseCase
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType.FINISH
-import com.app.home.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import com.app.home.feature.onboarding.domain.UpdateOnboardingShowOnboardingUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,6 @@ class OnboardingViewModel(
 
     val stepsOrder = mutableListOf(
         WELCOME,
-        INTRODUCTION,
         FINISH
     )
 

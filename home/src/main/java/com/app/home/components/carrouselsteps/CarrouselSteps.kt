@@ -25,7 +25,6 @@ import com.app.core.ui.theme.GrayLight
 import com.app.core.ui.theme.Primary
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType.FINISH
-import com.app.home.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 
 @Composable
@@ -120,12 +119,11 @@ fun StepsToggle(
 fun CarrouselStepsPreview() {
     val stepsOrder = mutableListOf(
         WELCOME,
-        INTRODUCTION,
         FINISH
     )
     CarrouselSteps(
         screenList = stepsOrder,
-        actualShowScreen = INTRODUCTION,
+        actualShowScreen = WELCOME,
         onClickAfterStep = {},
         onClickNextStep = {}
     )

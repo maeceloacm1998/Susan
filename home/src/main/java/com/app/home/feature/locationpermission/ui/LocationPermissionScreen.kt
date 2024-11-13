@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.components.buttons.ButtonComponent
@@ -22,7 +23,6 @@ import com.app.core.components.buttons.OutlinedButtonComponent
 import com.app.core.ui.theme.Background
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
-import com.app.core.ui.theme.Secondary
 import com.app.home.R
 
 @Composable
@@ -68,14 +68,14 @@ fun TextContainer() {
             height = CustomDimensions.padding150,
             width = CustomDimensions.padding150
         ),
-        painter = painterResource(id = R.drawable.ic_search_med_location_img),
-        contentDescription = "location image 1"
+        painter = painterResource(id = R.drawable.ic_location_img),
+        contentDescription = "location pointer"
     )
 
     Spacer(modifier = Modifier.padding(vertical = CustomDimensions.padding16))
 
     Text(
-        text = "Qual é a sua localização",
+        text = stringResource(id = R.string.localization_permission_title),
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Center,
         color = Primary
@@ -85,10 +85,10 @@ fun TextContainer() {
 
     Text(
         modifier = Modifier.padding(horizontal = CustomDimensions.padding24),
-        text = "Encontre hospitais próximos rapidamente e com facilidade.",
+        text = stringResource(id = R.string.localization_permission_subtitle),
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center,
-        color = Secondary
+        color = Primary
     )
 }
 

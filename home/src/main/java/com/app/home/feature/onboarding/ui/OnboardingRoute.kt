@@ -15,7 +15,6 @@ import com.app.core.utils.AnimatedUtils.animatedTransitionPage
 import com.app.home.components.carrouselsteps.CarrouselSteps
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType.FINISH
-import com.app.home.feature.onboarding.data.models.OnboardingStepsType.INTRODUCTION
 import com.app.home.feature.onboarding.data.models.OnboardingStepsType.WELCOME
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import org.koin.androidx.compose.koinViewModel
@@ -60,7 +59,6 @@ fun OnboardingRoute(
         ) { targetState ->
             when (targetState) {
                 WELCOME -> OnboardingWelcomeScreen()
-                INTRODUCTION -> OnboardingIntroductionScreen()
                 FINISH -> OnboardingFinishScreen()
             }
         }

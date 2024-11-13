@@ -2,10 +2,14 @@
     <string name="app_name">home</string>
 
     // ONBOARDING
-    <string name="onboarding_welcome_title">Bem vindo ao\nSearchMed!</string>
-    <string name="onboarding_welcome_subtitle">Encontre hospitais próximos a você</string>
+    <string name="onboarding_welcome_title">Susan, sua Assistente Virtual para momentos de emergência!</string>
+    <string name="onboarding_welcome_subtitle">Meu objetivo é ajudar você nos momentos que mais precisar, de forma rápida e segura.</string>
     <string name="onboarding_introduction_title">Busque por hospitais</string>
     <string name="onboarding_introduction_subtitle">Busque por hospitais usando a barra de busca ou explore o mapa interativo para ver as opções ao seu redor.</string>
-    <string name="onboarding_finish_title">Em caso de emegência</string>
-    <string name="onboarding_finish_subtitle">Em caso de emergência, pressione o botão de emergência para localizar imediatamente o hospital mais próximo de você.</string>
+    <string name="onboarding_finish_title">Está precisando de ajuda?</string>
+    <string name="onboarding_finish_subtitle">Digite um texto ou grave audio falando sobre sua emergência, eu, Susan, estou pronta para te ajudar no possível.</string>
+
+    // L0CATION PERMISSION
+    <string name="localization_permission_title">Precisamos da sua localização</string>
+    <string name="localization_permission_subtitle">Para encontrar hospitais próximos a você, precisamos da sua localização. Permita o acesso à localização para continuar.</string>
 </resources>
