@@ -30,6 +30,7 @@ import com.app.home.components.audiochat.AudioRecordingButton
 import com.app.home.components.expandablebutton.ExpandableButton
 import com.app.home.components.textfieldchat.TextFieldChat
 import com.app.home.components.topbar.ToolbarCustom
+import com.app.home.feature.chatcontainer.ChatContainerRoute
 
 @Composable
 fun ChatScreen(
@@ -74,8 +75,8 @@ fun ChatContainer(
             loading = uiState.isLoading,
             loadingContent = { ScreenLoading() },
             content = {
-                // Ensure this does not recursively call itself
-//                ChatContent(uiState = uiState)
+                check(uiState is ChatUiState.HasChatMessage)
+                ChatContainerRoute(messageList = uiState.messageList)
             }
         )
     }

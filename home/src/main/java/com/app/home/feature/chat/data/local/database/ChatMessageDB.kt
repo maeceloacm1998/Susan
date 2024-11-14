@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.app.home.feature.chat.data.local.dao.ChatMessageDAO
 import com.app.home.feature.chat.data.local.dao.ChatMessageEntity
+import com.app.home.feature.chat.data.local.dao.Converters
 
 @Database(entities = [ChatMessageEntity::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class ChatMessageDB  : RoomDatabase() {
     abstract fun chatMessageDAO(): ChatMessageDAO
 

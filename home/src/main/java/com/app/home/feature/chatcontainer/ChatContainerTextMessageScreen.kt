@@ -16,17 +16,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.ui.theme.BackgroundUserChat
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
+import com.app.home.feature.chat.data.external.models.EmergencyData
+import com.app.home.feature.chat.data.models.ChatMessage
 import com.app.home.feature.chat.data.models.ChatMessageAuthor
 
 
 @Composable
 fun ChatContainerTextMessageScreen(
-    type: ChatMessageAuthor = ChatMessageAuthor.SUSAN
+    chatMessage: ChatMessage
 ) {
-    val messageColor = if (type == ChatMessageAuthor.USER) Primary else Color.White
-    val backgroundMessageColor = if (type == ChatMessageAuthor.USER) BackgroundUserChat else Primary
-    val marginStart = if (type == ChatMessageAuthor.USER) CustomDimensions.padding50 else CustomDimensions.padding1
-    val marginEnd = if (type == ChatMessageAuthor.USER) CustomDimensions.padding1 else CustomDimensions.padding50
+    val messageColor = if (chatMessage.author == ChatMessageAuthor.USER.author) Primary else Color.White
+    val backgroundMessageColor = if (chatMessage.author == ChatMessageAuthor.USER.author) BackgroundUserChat else Primary
+    val marginStart = if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding50 else CustomDimensions.padding1
+    val marginEnd = if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding1 else CustomDimensions.padding50
 
     Box(
         modifier = Modifier.padding(start = marginStart, end = marginEnd)
@@ -45,14 +47,14 @@ fun ChatContainerTextMessageScreen(
         ) {
             Text(
                 modifier = Modifier.padding(bottom = CustomDimensions.padding5),
-                text = "Voce Digitou:",
+                text =  chatMessage.author,
                 color = messageColor,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                text = "Sofri um acidente de carro e minha perna esta doendo muito.",
+                text = chatMessage.message,
                 color = messageColor,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -63,5 +65,16 @@ fun ChatContainerTextMessageScreen(
 @Preview
 @Composable
 fun ChatContainerTextMessageScreenPreview() {
-    ChatContainerTextMessageScreen()
+    ChatContainerTextMessageScreen(
+        chatMessage = ChatMessage(
+            author = "User",
+            message = "Hello",
+            type = ChatMessageAuthor.USER.author,
+            timestamp = 0L,
+            id = 0,
+            timer = 0,
+            isLoading = false,
+            extraItems = EmergencyData()
+        )
+    )
 }

@@ -8,6 +8,7 @@ object HomeDI {
     @RequiresApi(Build.VERSION_CODES.S)
     val instance = listOf(
         ChatModule.modules,
+        ChatContainerModule.modules,
         ChatMessageDBModule.modules,
         LocationPermissionModule.modules,
         LocationPermissionUseCaseModule.modules,
