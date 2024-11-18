@@ -14,33 +14,32 @@ val Typography = Typography(
     ),
     titleMedium = TextStyle(
         fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 28.sp,
+        fontSize = 20.sp,
+        lineHeight = 30.sp,
         letterSpacing = 0.sp
     ),
     titleSmall = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 28.sp,
+        fontSize = 18.sp,
+        lineHeight = 27.sp,
         letterSpacing = 0.sp
     ),
     bodyLarge = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 25.sp,
-        lineHeight = 28.sp,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.sp
     ),
     bodyMedium = TextStyle(
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 28.sp,
+        fontSize = 14.sp,
+        lineHeight = 21.sp,
         letterSpacing = 0.sp
-    )
-    ,
+    ),
     bodySmall = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 28.sp,
+        fontSize = 12.sp,
+        lineHeight = 18.sp,
         letterSpacing = 0.sp
     )
 )
