@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.GoogleMapsIconColor
+import com.app.core.ui.theme.Secondary
 import com.app.core.ui.theme.SoftBlack
 import com.app.core.ui.theme.WazeBackgroundColor
 import com.app.home.R
@@ -46,12 +47,13 @@ fun ChatContainerExtrasScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = CustomDimensions.padding8)
             .background(Color.White, shape = RoundedCornerShape(CustomDimensions.padding10))
             .padding(CustomDimensions.padding20)
     ) {
         Text(
             text = extraItems.name ?: "Nome do local não informado",
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleMedium,
             color = SoftBlack,
             fontWeight = FontWeight.Bold,
         )
@@ -80,25 +82,24 @@ fun Address(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(vertical = CustomDimensions.padding10),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
+            modifier = Modifier.weight(0.9f),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier.padding(end = CustomDimensions.padding10),
                 imageVector = Icons.Filled.Map,
                 contentDescription = "Map icon",
-                tint = SoftBlack
+                tint = Secondary
             )
 
             Text(
-                modifier = Modifier.width(CustomDimensions.padding250),
                 text = extraItems.address ?: "Endereço não informado",
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 color = SoftBlack,
                 fontWeight = FontWeight.Normal,
                 maxLines = 2
@@ -106,6 +107,7 @@ fun Address(
         }
 
         IconButton(
+            modifier = Modifier.weight(0.1f),
             onClick = onClickCopyAddress
         ) {
             Icon(
@@ -124,12 +126,13 @@ fun PhoneNumber(
 ) {
     Row(
         modifier = Modifier.clickable { onClickPhoneNumber() },
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             modifier = Modifier.padding(end = CustomDimensions.padding10),
             imageVector = Icons.Filled.Phone,
             contentDescription = "Phone icon",
-            tint = SoftBlack
+            tint = Secondary
         )
 
         Text(
@@ -204,8 +207,8 @@ fun TipsOfLocation(
                 shape = RoundedCornerShape(CustomDimensions.padding30)
             )
             .padding(
-                vertical = CustomDimensions.padding10,
-                horizontal = CustomDimensions.padding16
+                vertical = CustomDimensions.padding8,
+                horizontal = CustomDimensions.padding10
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -217,7 +220,7 @@ fun TipsOfLocation(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = titleColor,
             fontWeight = FontWeight.Bold,
         )
