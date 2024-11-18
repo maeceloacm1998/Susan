@@ -100,6 +100,9 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 
+    // SHIMMER
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1")
+
     testImplementation("io.insert-koin:koin-test:3.5.0")
     testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")

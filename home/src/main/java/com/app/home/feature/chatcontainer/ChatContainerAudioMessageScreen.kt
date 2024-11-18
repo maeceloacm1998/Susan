@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
@@ -24,12 +26,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.app.core.ui.theme.BackgroundUserChat
 import com.app.core.ui.theme.CustomDimensions
+import com.app.core.ui.theme.GrayLight
 import com.app.core.ui.theme.Primary
 import com.app.core.ui.theme.Secondary
 import com.app.core.utils.Utils.formatSeconds
 import com.app.home.feature.chat.data.external.models.EmergencyData
 import com.app.home.feature.chat.data.models.ChatMessage
 import com.app.home.feature.chat.data.models.ChatMessageAuthor
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun ChatContainerAudioMessageScreen(
@@ -49,34 +53,38 @@ fun ChatContainerAudioMessageScreen(
     val marginEnd =
         if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding1 else CustomDimensions.padding50
 
-    Box(modifier = Modifier.padding(start = marginStart, end = marginEnd)) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    backgroundMessageColor,
-                    shape = RoundedCornerShape(CustomDimensions.padding10)
+    if (chatMessage.isLoading) {
+        ShimmeringAudioPlaceholder()
+    } else {
+        Box(modifier = Modifier.padding(start = marginStart, end = marginEnd)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        backgroundMessageColor,
+                        shape = RoundedCornerShape(CustomDimensions.padding10)
+                    )
+                    .padding(
+                        vertical = CustomDimensions.padding14,
+                        horizontal = CustomDimensions.padding18
+                    )
+            ) {
+                Text(
+                    text = chatMessage.author,
+                    color = messageColor,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold
                 )
-                .padding(
-                    vertical = CustomDimensions.padding14,
-                    horizontal = CustomDimensions.padding18
-                )
-        ) {
-            Text(
-                text = chatMessage.author,
-                color = messageColor,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold
-            )
 
-            AudioMessage(
-                chatMessage = chatMessage,
-                startAudio = startAudio,
-                progressAudio = progressAudio,
-                timerAudio = timerAudio,
-                messageColor = messageColor,
-                onClickPlayAudio = onClickPlayAudio
-            )
+                AudioMessage(
+                    chatMessage = chatMessage,
+                    startAudio = startAudio,
+                    progressAudio = progressAudio,
+                    timerAudio = timerAudio,
+                    messageColor = messageColor,
+                    onClickPlayAudio = onClickPlayAudio
+                )
+            }
         }
     }
 }
@@ -97,7 +105,7 @@ fun AudioMessage(
         IconButton(
             onClick = { onClickPlayAudio(chatMessage) }
         ) {
-            if(startAudio) {
+            if (startAudio) {
                 Icon(
                     imageVector = Icons.Default.Pause,
                     contentDescription = "Pause Icon",
@@ -132,6 +140,55 @@ fun AudioMessage(
                 fontWeight = FontWeight.Bold
             )
         }
+    }
+}
+
+@Composable
+fun ShimmeringAudioPlaceholder() {
+    Column(
+        modifier = Modifier
+            .shimmer()
+            .fillMaxWidth()
+            .padding(
+                end = CustomDimensions.padding50
+            )
+            .background(
+                GrayLight,
+                shape = RoundedCornerShape(CustomDimensions.padding10)
+            )
+            .padding(
+                vertical = CustomDimensions.padding14,
+                horizontal = CustomDimensions.padding18
+            ),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(CustomDimensions.padding24)
+                .background(Color.LightGray)
+                .padding(bottom = CustomDimensions.padding8),
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = CustomDimensions.padding10),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(width = CustomDimensions.padding20, height = CustomDimensions.padding20)
+                    .background(Color.LightGray)
+                    .padding(end = CustomDimensions.padding14),
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray),
+            )
+        }
+
     }
 }
 
@@ -176,4 +233,10 @@ fun AudioMessagePreview() {
         timerAudio = 10,
         onClickPlayAudio = {}
     )
+}
+
+@Preview
+@Composable
+fun ShimmeringAudioPlaceholderPreview() {
+    ShimmeringAudioPlaceholder()
 }

@@ -69,7 +69,6 @@ class ChatViewModel(
             author = ChatMessageAuthor.USER.author,
             type = ChatMessageType.AUDIO.type,
             timer = timer,
-            isLoading = true
         )
 
         viewModelScope.launch {
@@ -83,7 +82,6 @@ class ChatViewModel(
             message = message,
             author = ChatMessageAuthor.USER.author,
             type = ChatMessageType.TEXT.type,
-            isLoading = true
         )
 
         viewModelScope.launch {

@@ -40,9 +40,9 @@ fun ChatContainerExtrasScreen(
     extraItems: EmergencyData,
     onClickCopyAddress: () -> Unit,
     onClickPhoneNumber: () -> Unit,
-    onClickGoogleMaps: () -> Unit = {},
-    onClickWaze: () -> Unit = {},
-    onClickUber: () -> Unit = {}
+    onClickGoogleMaps: () -> Unit,
+    onClickWaze: () -> Unit,
+    onClickUber: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -237,7 +237,10 @@ fun ChatContainerExtrasScreenPreview() {
             phoneNumber = "Telefone do local"
         ),
         onClickCopyAddress = {},
-        onClickPhoneNumber = {}
+        onClickPhoneNumber = {},
+        onClickGoogleMaps = {},
+        onClickWaze = {},
+        onClickUber = {}
     )
 }
 
