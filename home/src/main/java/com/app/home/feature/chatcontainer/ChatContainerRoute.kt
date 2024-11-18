@@ -1,58 +1,78 @@
 package com.app.home.feature.chatcontainer
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.app.core.ui.theme.CustomDimensions
 import com.app.home.feature.chat.data.models.ChatMessage
 import com.app.home.feature.chat.data.models.ChatMessageType
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ChatContainerRoute(
-    messageList: List<ChatMessage>,
-    chatContainerViewModel: ChatContainerViewModel = koinViewModel()
+    chatMessage: ChatMessage,
+    chatContainerViewModel: ChatContainerViewModel
 ) {
+    val context = LocalContext.current
     val uiState by chatContainerViewModel.uiState.collectAsStateWithLifecycle()
 
     ChatContainerRoute(
-        uiState = uiState,
-        messageList = messageList
+        chatMessage = chatMessage,
+        startAudio = uiState.startAudio,
+        progressAudio = uiState.progressAudio,
+        timerAudio = uiState.timerAudio,
+        onClickPlayAudio = {
+            chatContainerViewModel.onStartAudio(
+                context = context,
+                chat = chatMessage
+            )
+        }
     )
+
+    if (chatMessage.extraItems?.name?.isNotBlank() == true) {
+        ChatContainerExtrasScreen(
+            extraItems = chatMessage.extraItems!!,
+            onClickPhoneNumber = {
+                chatContainerViewModel.onHandlePhoneNumber(context = context)
+            },
+            onClickCopyAddress = {
+                chatContainerViewModel.onHandleCopyAddress(context = context)
+            },
+            onClickUber = {
+                chatContainerViewModel.onHandleUber(context = context)
+            },
+            onClickGoogleMaps = {
+                chatContainerViewModel.onHandleGoogleMaps(context = context)
+            },
+            onClickWaze = {
+                chatContainerViewModel.onHandleWaze(context = context)
+            },
+        )
+    }
 }
 
 @Composable
 fun ChatContainerRoute(
-    uiState: ChatContainerViewModelUiState,
-    messageList: List<ChatMessage>,
+    chatMessage: ChatMessage,
+    startAudio: Boolean,
+    progressAudio: Float,
+    timerAudio: Int,
+    onClickPlayAudio: (chatMessage: ChatMessage) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(CustomDimensions.padding20),
-        verticalArrangement = Arrangement.spacedBy(CustomDimensions.padding8)
-    ) {
-        items(messageList) { item ->
-            when (item.type) {
-                ChatMessageType.TEXT.type -> {
-                    ChatContainerTextMessageScreen(
-                        chatMessage = item
-                    )
-                }
+    when (chatMessage.type) {
+        ChatMessageType.TEXT.type -> {
+            ChatContainerTextMessageScreen(
+                chatMessage = chatMessage
+            )
+        }
 
-                ChatMessageType.AUDIO.type -> {
-                    ChatContainerAudioMessageScreen(
-                        chatMessage = item,
-                        onClickPlayAudio = {}
-                    )
-                }
-            }
+        ChatMessageType.AUDIO.type -> {
+            ChatContainerAudioMessageScreen(
+                chatMessage = chatMessage,
+                startAudio = startAudio,
+                progressAudio = progressAudio,
+                timerAudio = timerAudio,
+                onClickPlayAudio = onClickPlayAudio
+            )
         }
     }
 }

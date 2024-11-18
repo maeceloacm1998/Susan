@@ -1,13 +1,12 @@
 package com.app.home.feature.chat.ui
 
-import android.content.Context
 import android.content.Intent
-import android.speech.tts.TextToSpeech
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.core.utils.Utils
+import com.app.core.utils.Utils.calculateAudioDuration
 import com.app.core.utils.Utils.onLaunchAudioRecording
 import com.app.home.feature.chat.data.models.ChatMessage
 import com.app.home.feature.chat.data.models.ChatMessageAuthor
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 class ChatViewModel(
     private val getMessageInternalUseCase: GetMessageInternalUseCase,
@@ -37,8 +35,6 @@ class ChatViewModel(
 
     private val _timerFlow = MutableStateFlow(0)
     val timerFlow: StateFlow<Int> = _timerFlow.asStateFlow()
-
-    private var tts: TextToSpeech? = null
 
     val uiState = viewModelState
         .map(ChatViewModelState::toUiState)
@@ -116,7 +112,7 @@ class ChatViewModel(
 
     private suspend fun onCreateLoadingMessage(chatMessage: ChatMessage) {
         val chatSusanMessage = onCreateChatMessage(
-            message = "Loading...",
+            message = chatMessage.message,
             author = ChatMessageAuthor.SUSAN.author,
             type = chatMessage.type,
             isLoading = true
@@ -130,12 +126,14 @@ class ChatViewModel(
     }
 
     private suspend fun fetchSusanEmergency(chatMessage: ChatMessage, userMessage: String) {
-        val result = getChatEmergencyUseCase(userMessage)
-        result.onSuccess { response ->
+        getChatEmergencyUseCase(userMessage).onSuccess { response ->
             chatMessage.apply {
                 isLoading = false
                 message = response.result.message
                 extraItems = response.result.data
+                if (chatMessage.type == ChatMessageType.AUDIO.type) {
+                    timer = calculateAudioDuration(response.result.message)
+                }
             }
 
             onUpdateMessageInternal(chatMessage)
@@ -165,14 +163,5 @@ class ChatViewModel(
 
     private fun onChangeRecordingAudioState(state: Boolean) {
         viewModelState.update { it.copy(recordAudio = state) }
-    }
-
-    private fun speakText(context: Context, text: String) {
-        tts = TextToSpeech(context) { status ->
-            if (status != TextToSpeech.ERROR) {
-                tts?.language = Locale("pt", "BR")
-                tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
-            }
-        }
     }
 }

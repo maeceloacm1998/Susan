@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +26,7 @@ import com.app.core.ui.theme.BackgroundUserChat
 import com.app.core.ui.theme.CustomDimensions
 import com.app.core.ui.theme.Primary
 import com.app.core.ui.theme.Secondary
+import com.app.core.utils.Utils.formatSeconds
 import com.app.home.feature.chat.data.external.models.EmergencyData
 import com.app.home.feature.chat.data.models.ChatMessage
 import com.app.home.feature.chat.data.models.ChatMessageAuthor
@@ -32,13 +34,20 @@ import com.app.home.feature.chat.data.models.ChatMessageAuthor
 @Composable
 fun ChatContainerAudioMessageScreen(
     chatMessage: ChatMessage,
-    onClickPlayAudio: (message: String) -> Unit
+    startAudio: Boolean,
+    progressAudio: Float,
+    timerAudio: Int,
+    onClickPlayAudio: (chatMessage: ChatMessage) -> Unit
 ) {
 
-    val messageColor = if (chatMessage.author == ChatMessageAuthor.USER.author) Primary else Color.White
-    val backgroundMessageColor = if (chatMessage.author == ChatMessageAuthor.USER.author) BackgroundUserChat else Primary
-    val marginStart = if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding50 else CustomDimensions.padding1
-    val marginEnd = if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding1 else CustomDimensions.padding50
+    val messageColor =
+        if (chatMessage.author == ChatMessageAuthor.USER.author) Primary else Color.White
+    val backgroundMessageColor =
+        if (chatMessage.author == ChatMessageAuthor.USER.author) BackgroundUserChat else Primary
+    val marginStart =
+        if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding50 else CustomDimensions.padding1
+    val marginEnd =
+        if (chatMessage.author == ChatMessageAuthor.USER.author) CustomDimensions.padding1 else CustomDimensions.padding50
 
     Box(modifier = Modifier.padding(start = marginStart, end = marginEnd)) {
         Column(
@@ -54,15 +63,17 @@ fun ChatContainerAudioMessageScreen(
                 )
         ) {
             Text(
-                modifier = Modifier.padding(bottom = CustomDimensions.padding5),
                 text = chatMessage.author,
                 color = messageColor,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold
             )
 
             AudioMessage(
                 chatMessage = chatMessage,
+                startAudio = startAudio,
+                progressAudio = progressAudio,
+                timerAudio = timerAudio,
                 messageColor = messageColor,
                 onClickPlayAudio = onClickPlayAudio
             )
@@ -73,21 +84,32 @@ fun ChatContainerAudioMessageScreen(
 @Composable
 fun AudioMessage(
     chatMessage: ChatMessage,
+    startAudio: Boolean,
+    progressAudio: Float,
+    timerAudio: Int,
     messageColor: Color,
-    onClickPlayAudio: (message: String) -> Unit
+    onClickPlayAudio: (chatMessage: ChatMessage) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(
-            onClick = { onClickPlayAudio(chatMessage.message) }
+            onClick = { onClickPlayAudio(chatMessage) }
         ) {
-            Icon(
-                imageVector = Icons.Filled.PlayArrow,
-                contentDescription = "Play",
-                tint = messageColor
-            )
+            if(startAudio) {
+                Icon(
+                    imageVector = Icons.Default.Pause,
+                    contentDescription = "Pause Icon",
+                    tint = messageColor
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = "Play Icon",
+                    tint = messageColor
+                )
+            }
         }
 
         Column(
@@ -97,14 +119,14 @@ fun AudioMessage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = CustomDimensions.padding10),
-                progress = { 0.1f },
+                progress = progressAudio,
                 color = Secondary,
                 trackColor = messageColor,
             )
 
             Text(
                 modifier = Modifier.padding(top = CustomDimensions.padding5),
-                text = chatMessage.timer.toString(),
+                text = formatSeconds(timerAudio),
                 color = messageColor,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold
@@ -127,6 +149,9 @@ fun ChatContainerAudioMessageScreenPreview() {
             isLoading = false,
             extraItems = EmergencyData()
         ),
+        startAudio = false,
+        progressAudio = 0.5f,
+        timerAudio = 10,
         onClickPlayAudio = {}
     )
 }
@@ -146,6 +171,9 @@ fun AudioMessagePreview() {
             extraItems = EmergencyData()
         ),
         messageColor = Primary,
+        startAudio = false,
+        progressAudio = 0.5f,
+        timerAudio = 10,
         onClickPlayAudio = {}
     )
 }

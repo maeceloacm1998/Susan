@@ -46,17 +46,18 @@ fun ChatContainerTextMessageScreen(
                 )
         ) {
             Text(
-                modifier = Modifier.padding(bottom = CustomDimensions.padding5),
+                modifier = Modifier.padding(bottom = CustomDimensions.padding8),
                 text =  chatMessage.author,
                 color = messageColor,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
                 text = chatMessage.message,
                 color = messageColor,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Light
             )
         }
     }

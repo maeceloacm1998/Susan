@@ -32,9 +32,17 @@ import com.app.core.ui.theme.GoogleMapsIconColor
 import com.app.core.ui.theme.SoftBlack
 import com.app.core.ui.theme.WazeBackgroundColor
 import com.app.home.R
+import com.app.home.feature.chat.data.external.models.EmergencyData
 
 @Composable
-fun ChatContainerExtrasScreen() {
+fun ChatContainerExtrasScreen(
+    extraItems: EmergencyData,
+    onClickCopyAddress: () -> Unit,
+    onClickPhoneNumber: () -> Unit,
+    onClickGoogleMaps: () -> Unit = {},
+    onClickWaze: () -> Unit = {},
+    onClickUber: () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,27 +50,37 @@ fun ChatContainerExtrasScreen() {
             .padding(CustomDimensions.padding20)
     ) {
         Text(
-            text = "Hospital metropolitano Dr. Célio de Castro",
+            text = extraItems.name ?: "Nome do local não informado",
             style = MaterialTheme.typography.bodyLarge,
             color = SoftBlack,
             fontWeight = FontWeight.Bold,
         )
 
-        Address()
-        PhoneNumber()
+        Address(
+            extraItems = extraItems,
+            onClickCopyAddress = onClickCopyAddress
+        )
+        PhoneNumber(
+            extraItems = extraItems,
+            onClickPhoneNumber = onClickPhoneNumber
+        )
         Spacer(modifier = Modifier.padding(vertical  = CustomDimensions.padding10))
-        LocationServices()
+        LocationServices(
+            onClickGoogleMaps = onClickGoogleMaps,
+            onClickWaze = onClickWaze,
+            onClickUber = onClickUber
+        )
     }
 }
 
 @Composable
 fun Address(
-    onClickPhoneNumber: (phoneNumber: String) -> Unit = {}
+    extraItems: EmergencyData,
+    onClickCopyAddress: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClickPhoneNumber("31999999999") }
             .padding(vertical = CustomDimensions.padding10),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -79,7 +97,7 @@ fun Address(
 
             Text(
                 modifier = Modifier.width(CustomDimensions.padding250),
-                text = "Rua blablabla, 235, Barreiro - Belo Horizonte/MG daisndisandisandisa",
+                text = extraItems.address ?: "Endereço não informado",
                 style = MaterialTheme.typography.bodyMedium,
                 color = SoftBlack,
                 fontWeight = FontWeight.Normal,
@@ -88,7 +106,7 @@ fun Address(
         }
 
         IconButton(
-            onClick = { }
+            onClick = onClickCopyAddress
         ) {
             Icon(
                 imageVector = Icons.Filled.CopyAll,
@@ -100,8 +118,13 @@ fun Address(
 }
 
 @Composable
-fun PhoneNumber() {
-    Row {
+fun PhoneNumber(
+    extraItems: EmergencyData,
+    onClickPhoneNumber: () -> Unit
+) {
+    Row(
+        modifier = Modifier.clickable { onClickPhoneNumber() },
+    ) {
         Icon(
             modifier = Modifier.padding(end = CustomDimensions.padding10),
             imageVector = Icons.Filled.Phone,
@@ -111,7 +134,7 @@ fun PhoneNumber() {
 
         Text(
             modifier = Modifier.width(CustomDimensions.padding250),
-            text = "(31) 00000-0000",
+            text = extraItems.phoneNumber ?: "Telefone não informado",
             style = MaterialTheme.typography.bodyMedium,
             color = SoftBlack,
             fontWeight = FontWeight.Normal,
@@ -121,7 +144,11 @@ fun PhoneNumber() {
 }
 
 @Composable
-fun LocationServices() {
+fun LocationServices(
+    onClickGoogleMaps: () -> Unit = {},
+    onClickWaze: () -> Unit = {},
+    onClickUber: () -> Unit = {}
+) {
     Column {
         Text(
             text = "Ir para o local:",
@@ -138,21 +165,24 @@ fun LocationServices() {
             TipsOfLocation(
                 title = "Google Maps",
                 icon = painterResource(id = R.drawable.ic_google_maps),
-                titleColor = GoogleMapsIconColor
+                titleColor = GoogleMapsIconColor,
+                onClickTips = onClickGoogleMaps
             )
 
             TipsOfLocation(
                 title = "Waze",
                 icon = painterResource(id = R.drawable.ic_waze),
                 titleColor = Color.White,
-                backgroundColor = WazeBackgroundColor
+                backgroundColor = WazeBackgroundColor,
+                onClickTips = onClickWaze
             )
 
             TipsOfLocation(
                 title = "Uber",
                 icon = painterResource(id = R.drawable.ic_uber),
                 titleColor = Color.White,
-                backgroundColor = SoftBlack
+                backgroundColor = SoftBlack,
+                onClickTips = onClickUber
             )
         }
     }
@@ -197,7 +227,15 @@ fun TipsOfLocation(
 @Preview
 @Composable
 fun ChatContainerExtrasScreenPreview() {
-    ChatContainerExtrasScreen()
+    ChatContainerExtrasScreen(
+        extraItems = EmergencyData(
+            name = "Nome do local",
+            address = "Endereço do local",
+            phoneNumber = "Telefone do local"
+        ),
+        onClickCopyAddress = {},
+        onClickPhoneNumber = {}
+    )
 }
 
 @Preview

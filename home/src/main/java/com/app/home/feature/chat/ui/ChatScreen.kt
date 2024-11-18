@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import org.koin.androidx.compose.get
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
@@ -31,6 +34,8 @@ import com.app.home.components.expandablebutton.ExpandableButton
 import com.app.home.components.textfieldchat.TextFieldChat
 import com.app.home.components.topbar.ToolbarCustom
 import com.app.home.feature.chatcontainer.ChatContainerRoute
+import com.app.home.feature.chatcontainer.ChatContainerViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ChatScreen(
@@ -76,7 +81,21 @@ fun ChatContainer(
             loadingContent = { ScreenLoading() },
             content = {
                 check(uiState is ChatUiState.HasChatMessage)
-                ChatContainerRoute(messageList = uiState.messageList)
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(CustomDimensions.padding20),
+                    verticalArrangement = Arrangement.spacedBy(CustomDimensions.padding8)
+                ) {
+                    items(uiState.messageList) { item ->
+                        val itemViewModel: ChatContainerViewModel = get(parameters = { parametersOf(item) })
+
+                        ChatContainerRoute(
+                            chatMessage = item,
+                            chatContainerViewModel = itemViewModel
+                        )
+                    }
+                }
             }
         )
     }
@@ -125,7 +144,7 @@ fun MessageContainer(
                     .weight(0.25f),
                 horizontalAlignment = Alignment.End
             ) {
-                if(message.isNotBlank()) {
+                if (message.isNotBlank()) {
                     ExpandableButton(
                         modifier = Modifier.padding(start = CustomDimensions.padding10),
                         icon = Icons.Filled.Send,
