@@ -21,10 +21,7 @@ fun ChatContainerRoute(
         progressAudio = uiState.progressAudio,
         timerAudio = uiState.timerAudio,
         onClickPlayAudio = {
-            chatContainerViewModel.onStartAudio(
-                context = context,
-                chat = chatMessage
-            )
+            chatContainerViewModel.onStartAudio(context = context)
         }
     )
 

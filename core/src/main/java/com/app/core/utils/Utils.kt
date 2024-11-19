@@ -38,7 +38,8 @@ object Utils {
 
     fun calculateAudioDuration(message: String): Int {
         val durationPerCharacter = MILLISECONDS_PER_SECOND
-        return message.length * durationPerCharacter
+        val totalMilliseconds = message.length * durationPerCharacter
+        return (totalMilliseconds / ONE_SECOND_IN_MILLISECONDS).toInt()
     }
 
     fun formatSeconds(seconds: Int): String {

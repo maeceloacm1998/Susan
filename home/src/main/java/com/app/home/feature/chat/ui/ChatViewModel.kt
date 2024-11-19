@@ -77,14 +77,15 @@ class ChatViewModel(
         }
     }
 
-    fun onCreateSendMessage(message: String) {
+    fun onCreateSendMessage() {
         val chatMessage = onCreateChatMessage(
-            message = message,
+            message = viewModelState.value.userMessage,
             author = ChatMessageAuthor.USER.author,
             type = ChatMessageType.TEXT.type,
         )
 
         viewModelScope.launch {
+            onChangeUserMessageState("")
             onCreateMessageInternal(chatMessage)
             onCreateLoadingMessage(chatMessage)
         }
@@ -129,9 +130,7 @@ class ChatViewModel(
                 isLoading = false
                 message = response.result.message
                 extraItems = response.result.data
-                if (chatMessage.type == ChatMessageType.AUDIO.type) {
-                    timer = calculateAudioDuration(response.result.message)
-                }
+                timer = calculateAudioDuration(response.result.message)
             }
 
             onUpdateMessageInternal(chatMessage)
@@ -161,5 +160,9 @@ class ChatViewModel(
 
     private fun onChangeRecordingAudioState(state: Boolean) {
         viewModelState.update { it.copy(recordAudio = state) }
+    }
+
+    fun onChangeUserMessageState(message: String) {
+        viewModelState.update { it.copy(userMessage = message) }
     }
 }

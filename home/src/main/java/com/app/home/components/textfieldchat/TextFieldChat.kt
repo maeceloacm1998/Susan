@@ -50,7 +50,7 @@ fun TextFieldChat(
                 Text(
                     text = label,
                     color = Primary,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
@@ -66,6 +66,7 @@ fun TextFieldChat(
         shape = RoundedCornerShape(CustomDimensions.padding40),
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.White,
+            focusedTextColor = Primary,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
@@ -73,7 +74,7 @@ fun TextFieldChat(
             imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(onDone = { onPressDoneListener() }),
-        maxLines = Int.MAX_VALUE // Allow multi-line input
+        maxLines = Int.MAX_VALUE
     )
 }
 

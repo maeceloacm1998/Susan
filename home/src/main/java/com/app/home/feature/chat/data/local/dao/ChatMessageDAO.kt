@@ -14,8 +14,8 @@ interface ChatMessageDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createMessage(chatMessage: ChatMessageEntity)
 
-    @Query("UPDATE chat_message_table SET message= :message, extraItems= :extraItems, isLoading= :isLoading WHERE id = :id")
-    fun updateLoading(id: Int, message: String, extraItems: EmergencyData, isLoading: Boolean)
+    @Query("UPDATE chat_message_table SET message= :message, timer= :timer, extraItems= :extraItems, isLoading= :isLoading WHERE id = :id")
+    fun updateLoading(id: Int, message: String, timer: Int, extraItems: EmergencyData, isLoading: Boolean)
 
     @Query("DELETE FROM chat_message_table")
     fun clearTable()

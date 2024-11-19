@@ -136,7 +136,7 @@ fun AudioMessage(
                 modifier = Modifier.padding(top = CustomDimensions.padding5),
                 text = formatSeconds(timerAudio),
                 color = messageColor,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold
             )
         }

@@ -77,6 +77,7 @@ class ChatRepositoryImpl(
         chatMessageDB.chatMessageDAO().updateLoading(
             id = chatMessage.id,
             message = chatMessage.message,
+            timer = chatMessage.timer,
             extraItems = chatMessage.extraItems!!,
             isLoading = chatMessage.isLoading
         )

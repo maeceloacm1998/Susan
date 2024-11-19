@@ -38,7 +38,13 @@ class ChatContainerViewModel(
     private var tts: TextToSpeech? = null
     private var timerJob: Job? = null
 
-    fun onStartAudio(context: Context, chat: ChatMessage) {
+    init {
+        viewModelState.update { state ->
+            state.copy(timerAudio = chatMessage.timer)
+        }
+    }
+
+    fun onStartAudio(context: Context) {
         if (!viewModelState.value.startAudio) {
             onStartAudioState()
             onStartSpeakText(context, chatMessage.message)

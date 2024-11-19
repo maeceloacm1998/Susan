@@ -79,33 +79,38 @@ fun ChatRoute(
 
     ChatRoute(
         uiState = uiState,
+        timer = timerState,
         onCreateNewChatListener = { },
         onPressStartAudio = {
             chatViewModel.onStartRecordingAudio(speechRecognizerLauncher)
         },
-        onPressSendMessage = { message ->
-            chatViewModel.onCreateSendMessage(message)
+        onPressSendMessage = {
+            chatViewModel.onCreateSendMessage()
         },
-        timer = timerState
+        onChangeUserMessage = { message ->
+            chatViewModel.onChangeUserMessageState(message)
+        }
     )
 }
 
 @Composable
 fun ChatRoute(
     uiState: ChatUiState,
+    timer: Int,
     onCreateNewChatListener: () -> Unit,
     onPressStartAudio: () -> Unit,
     onPressSendMessage: (message: String) -> Unit,
-    timer: Int
+    onChangeUserMessage: (message: String) -> Unit
 ) {
     when {
         uiState.isLoading -> ScreenLoading()
         else -> ChatScreen(
             uiState = uiState,
+            timer = timer,
             onCreateNewChatListener = onCreateNewChatListener,
             onPressStartAudio = onPressStartAudio,
             onPressSendMessage = onPressSendMessage,
-            timer = timer
+            onChangeUserMessage = onChangeUserMessage
         )
     }
 }

@@ -13,13 +13,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,15 +43,18 @@ import com.app.home.components.textfieldchat.TextFieldChat
 import com.app.home.components.topbar.ToolbarCustom
 import com.app.home.feature.chatcontainer.ChatContainerRoute
 import com.app.home.feature.chatcontainer.ChatContainerViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ChatScreen(
     uiState: ChatUiState,
+    timer: Int,
     onCreateNewChatListener: () -> Unit,
     onPressStartAudio: () -> Unit,
     onPressSendMessage: (message: String) -> Unit,
-    timer: Int
+    onChangeUserMessage: (message: String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -54,9 +65,10 @@ fun ChatScreen(
         ChatContainer(modifier = Modifier.weight(1f), uiState = uiState)
         MessageContainer(
             uiState = uiState,
-            onPressStartAudio = onPressStartAudio,
             timer = timer,
-            onPressSendMessage = onPressSendMessage
+            onPressStartAudio = onPressStartAudio,
+            onPressSendMessage = onPressSendMessage,
+            onChangeUserMessage = onChangeUserMessage
         )
     }
 }
@@ -81,19 +93,54 @@ fun ChatContainer(
             loadingContent = { ScreenLoading() },
             content = {
                 check(uiState is ChatUiState.HasChatMessage)
+                val chatState = rememberLazyListState()
+
+                val coroutineScope = rememberCoroutineScope()
+                var showScrollToBottomButton by remember { mutableStateOf(false) }
+
+                LaunchedEffect(chatState) {
+                    snapshotFlow { chatState.layoutInfo.visibleItemsInfo }
+                        .collect { visibleItems ->
+                            showScrollToBottomButton = visibleItems.lastOrNull()?.index != chatState.layoutInfo.totalItemsCount - 1
+                        }
+                }
+
+                LaunchedEffect(uiState.messageList) {
+                    coroutineScope.launch {
+                        chatState.scrollToItem(chatState.layoutInfo.totalItemsCount - 1)
+                    }
+                }
+
                 LazyColumn(
+                    state = chatState,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(CustomDimensions.padding20),
                     verticalArrangement = Arrangement.spacedBy(CustomDimensions.padding8)
                 ) {
                     items(uiState.messageList) { item ->
-                        val itemViewModel: ChatContainerViewModel = get(parameters = { parametersOf(item) })
+                        val itemViewModel: ChatContainerViewModel =
+                            get(parameters = { parametersOf(item) })
 
                         ChatContainerRoute(
                             chatMessage = item,
                             chatContainerViewModel = itemViewModel
                         )
+                    }
+                }
+
+                if (showScrollToBottomButton) {
+                    FloatingActionButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                chatState.animateScrollToItem(chatState.layoutInfo.totalItemsCount - 1)
+                            }
+                        },
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(CustomDimensions.padding14)
+                    ) {
+                        Icon(Icons.Filled.ArrowDownward, contentDescription = "Scroll to bottom")
                     }
                 }
             }
@@ -106,6 +153,7 @@ fun MessageContainer(
     uiState: ChatUiState,
     onPressStartAudio: () -> Unit,
     onPressSendMessage: (message: String) -> Unit,
+    onChangeUserMessage: (message: String) -> Unit = {},
     timer: Int = 0
 ) {
     Column(
@@ -121,8 +169,6 @@ fun MessageContainer(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            var message by rememberSaveable { mutableStateOf("") }
-
             if (uiState.recordAudio) {
                 AudioRecordingButton(
                     modifier = Modifier.weight(1f),
@@ -130,10 +176,10 @@ fun MessageContainer(
                 )
             } else {
                 TextFieldChat(
-                    value = message,
-                    onValueChange = { message = it },
+                    value = uiState.userMessage,
+                    onValueChange = { onChangeUserMessage(it) },
                     label = "Digite sua emergência aqui...",
-                    onPressDoneListener = { onPressSendMessage(message) },
+                    onPressDoneListener = { onPressSendMessage(uiState.userMessage) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -144,12 +190,12 @@ fun MessageContainer(
                     .weight(0.25f),
                 horizontalAlignment = Alignment.End
             ) {
-                if (message.isNotBlank()) {
+                if (uiState.userMessage.isNotBlank()) {
                     ExpandableButton(
                         modifier = Modifier.padding(start = CustomDimensions.padding10),
                         icon = Icons.Filled.Send,
                         isPressed = false,
-                        onPressStart = { onPressSendMessage(message) },
+                        onPressStart = { onPressSendMessage(uiState.userMessage) },
                     )
                 } else {
                     ExpandableButton(
@@ -173,7 +219,8 @@ fun ChatScreenPreview() {
             errorMessages = null,
             isLoading = false,
             isLocationActive = false,
-            recordAudio = false
+            recordAudio = false,
+            userMessage = ""
         ),
         onCreateNewChatListener = { },
         onPressStartAudio = { },
@@ -191,7 +238,8 @@ fun ChatInitialScreenPreview() {
             errorMessages = null,
             isLoading = false,
             isLocationActive = false,
-            recordAudio = false
+            recordAudio = false,
+            userMessage = ""
         ),
         onCreateNewChatListener = { },
         onPressStartAudio = { },
@@ -210,7 +258,8 @@ fun ChatContainerPreview() {
             errorMessages = null,
             isLoading = false,
             isLocationActive = false,
-            recordAudio = false
+            recordAudio = false,
+            userMessage = ""
         )
     )
 }
@@ -225,7 +274,8 @@ fun MessageContainerPreview() {
             errorMessages = null,
             isLoading = false,
             isLocationActive = false,
-            recordAudio = false
+            recordAudio = false,
+            userMessage = ""
         ),
         onPressStartAudio = { },
         onPressSendMessage = { },
