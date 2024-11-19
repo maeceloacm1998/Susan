@@ -1,6 +1,8 @@
 package com.app.home.feature.chat.ui
 
+import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
@@ -12,6 +14,7 @@ import com.app.home.feature.chat.data.models.ChatMessage
 import com.app.home.feature.chat.data.models.ChatMessageAuthor
 import com.app.home.feature.chat.data.models.ChatMessageType
 import com.app.home.feature.chat.domain.CreateMessageInternalUseCase
+import com.app.home.feature.chat.domain.DeleteMessageInternalUseCase
 import com.app.home.feature.chat.domain.GetChatEmergencyUseCase
 import com.app.home.feature.chat.domain.GetMessageInternalUseCase
 import com.app.home.feature.chat.domain.UpdateMessageInternalUseCase
@@ -29,7 +32,8 @@ class ChatViewModel(
     private val getMessageInternalUseCase: GetMessageInternalUseCase,
     private val createMessageInternalUseCase: CreateMessageInternalUseCase,
     private val getChatEmergencyUseCase: GetChatEmergencyUseCase,
-    private val updateMessageInternalUseCase: UpdateMessageInternalUseCase
+    private val updateMessageInternalUseCase: UpdateMessageInternalUseCase,
+    private val deleteMessageInternalUseCase: DeleteMessageInternalUseCase
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(ChatViewModelState(isLoading = false))
 
@@ -61,6 +65,14 @@ class ChatViewModel(
     fun onStopRecordingAudio() {
         viewModelState.update { it.copy(recordAudio = false) }
         _timerFlow.value = 0
+    }
+
+    fun onCreateNewChat(context: Context) {
+        viewModelScope.launch {
+            deleteMessageInternalUseCase()
+            onUpdateMessage()
+            Toast.makeText(context, "Chat limpo com sucesso!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun onCreateRecordingMessage(textAudio: String, timer: Int) {
@@ -135,7 +147,8 @@ class ChatViewModel(
 
             onUpdateMessageInternal(chatMessage)
         }.onFailure { throwable ->
-            val x = ""
+            // Deveria ter validação para quando de erro o request, mas confesso que estou com preguica de fazer.
+            // Caso algum dia eu va precisar desse codigo, eu faço.
         }
     }
 

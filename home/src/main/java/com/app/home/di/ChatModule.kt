@@ -6,6 +6,7 @@ import com.app.home.feature.chat.data.ChatRepository
 import com.app.home.feature.chat.data.ChatRepositoryImpl
 import com.app.home.feature.chat.data.external.EmergencyApi
 import com.app.home.feature.chat.domain.CreateMessageInternalUseCase
+import com.app.home.feature.chat.domain.DeleteMessageInternalUseCase
 import com.app.home.feature.chat.domain.GetChatCurrentLocationUseCase
 import com.app.home.feature.chat.domain.GetChatEmergencyUseCase
 import com.app.home.feature.chat.domain.GetMessageInternalUseCase
@@ -21,9 +22,9 @@ import java.util.concurrent.TimeUnit
 
 object ChatModule {
     private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(60, TimeUnit.SECONDS)  // Increase connection timeout
-        .readTimeout(60, TimeUnit.SECONDS)     // Increase read timeout
-        .writeTimeout(60, TimeUnit.SECONDS)    // Increase write timeout
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
         .build()
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -76,6 +77,13 @@ object ChatModule {
                 getLocationActiveUseCase = get()
             )
         }
+
+        single {
+            DeleteMessageInternalUseCase(
+                chatRepository = get()
+            )
+        }
+
         single { ObserveChatCurrentLocationUseCase(chatRepository = get()) }
 
         viewModel {
@@ -83,7 +91,8 @@ object ChatModule {
                 getMessageInternalUseCase = get(),
                 createMessageInternalUseCase = get(),
                 getChatEmergencyUseCase = get(),
-                updateMessageInternalUseCase = get()
+                updateMessageInternalUseCase = get(),
+                deleteMessageInternalUseCase = get()
             )
         }
     }

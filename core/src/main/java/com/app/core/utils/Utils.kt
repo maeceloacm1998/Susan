@@ -70,17 +70,13 @@ object Utils {
         val uri = Uri.parse("waze://?ll=$lat,$lng&navigate=yes")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.waze")
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
-        }
+        context.startActivity(intent)
     }
 
     fun onOpenUber(context: Context, lat: Double, lng: Double) {
         val uri = Uri.parse("uber://?action=setPickup&pickup=my_location&dropoff[latitude]=$lat&dropoff[longitude]=$lng")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.ubercab")
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
-        }
+        context.startActivity(intent)
     }
 }

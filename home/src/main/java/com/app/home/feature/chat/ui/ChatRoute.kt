@@ -51,6 +51,7 @@ fun RequestAudioPermission(
 fun ChatRoute(
     chatViewModel: ChatViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     val uiState by chatViewModel.uiState.collectAsStateWithLifecycle()
     val timerState by chatViewModel.timerFlow.collectAsStateWithLifecycle()
 
@@ -80,7 +81,7 @@ fun ChatRoute(
     ChatRoute(
         uiState = uiState,
         timer = timerState,
-        onCreateNewChatListener = { },
+        onCreateNewChatListener = { chatViewModel.onCreateNewChat(context) },
         onPressStartAudio = {
             chatViewModel.onStartRecordingAudio(speechRecognizerLauncher)
         },
