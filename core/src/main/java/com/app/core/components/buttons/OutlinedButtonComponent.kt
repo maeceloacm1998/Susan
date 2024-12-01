@@ -60,7 +60,7 @@ fun OutlinedButtonComponent(
                 Text(
                     text = title,
                     color = titleColor,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
             }
